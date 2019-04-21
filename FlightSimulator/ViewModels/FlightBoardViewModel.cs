@@ -16,7 +16,7 @@ namespace FlightSimulator.ViewModels
         }
 
         public double Lat
-        {
+        { // hi
             get;
         }
     }
