@@ -19,8 +19,10 @@ namespace FlightSimulator
     /// </summarry>
     public partial class MainWindow : Window
     {
+        ViewModels.Windows.SettingsWindowViewModel VM_settings;
         public MainWindow()
         {
+            VM_settings = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
             InitializeComponent();
         }
 
@@ -29,5 +31,6 @@ namespace FlightSimulator
             Views.Windows.SettingsWindow objSettings = new Views.Windows.SettingsWindow();
             objSettings.Show();
         }
+
     }
 }

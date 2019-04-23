@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightSimulator.Views.Windows"
         mc:Ignorable="d"
-        Title="Settings" Height="250" Width="300" DataContext="SettingsWIndowViewModel">
+        Title="Settings" Height="250" Width="300" WindowStyle="ToolWindow">
         
     <Grid TextBlock.FontSize="14">
         <Grid.RowDefinitions>
@@ -24,7 +24,7 @@
         <TextBox x:Name="txtPort" Grid.Row="1" Grid.Column="2" Padding="3"
 Margin="3"></TextBox>
         <TextBlock Grid.Row="2" Padding="3" Margin="3">Flight Command Port:</TextBlock>
-        <TextBox x:Name="txtComPort" Grid.Row="2" Grid.Column="2" Padding="3" Text="{Binding FlightCommandPort}"
+        <TextBox x:Name="txtComPort" Grid.Row="2" Grid.Column="2" Padding="3"
 Margin="3"></TextBox>
         <Button x:Name="btnOk" Grid.Row="3" HorizontalAlignment="Right"
 Grid.Column="0" Click="btn_OK" Margin="5" Padding="5">OK</Button>
