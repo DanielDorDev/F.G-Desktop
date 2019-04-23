@@ -14,14 +14,29 @@ using System.Windows.Shapes;
 
 namespace FlightSimulator.Views.Windows
 {
+
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class SettingsWindow : Window
     {
-        public Window1()
+        public SettingsWindow()
         {
             InitializeComponent();
+        }
+
+        private void btn_OK(object sender, RoutedEventArgs e)
+        {
+            MainWindow win = (MainWindow)Application.Current.MainWindow;
+            win.Show();
+            this.Close();
+        }
+
+        private void btn_Cancel(object sender, RoutedEventArgs e)
+        {
+            MainWindow win = (MainWindow)Application.Current.MainWindow;
+            win.Show();
+            this.Close();
         }
     }
 }

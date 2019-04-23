@@ -13,5 +13,9 @@ namespace FlightSimulator
     /// </summary>
     public partial class App : Application
     {
+        private void TextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
     }
 }
