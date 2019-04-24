@@ -75,6 +75,7 @@
     <Compile Include="Model\Interface\ITelnetClient.cs" />
     <Compile Include="Model\Interface\ITelnetServer.cs" />
     <Compile Include="Model\ManualModel.cs" />
+    <Compile Include="ViewModels\AutoPilotViewModel.cs" />
     <Compile Include="ViewModels\BaseNotify.cs" />
     <Compile Include="ViewModels\FlightBoardViewModel.cs" />
     <Compile Include="ViewModels\FlightGearViewModel.cs" />
