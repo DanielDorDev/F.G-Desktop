@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightSimulator.Views.Windows"
         mc:Ignorable="d"
-        Title="Settings" Height="250" Width="300" WindowStyle="ToolWindow">
+        Title="Settings" Height="180" Width="300" WindowStyle="ToolWindow" MinWidth="300" MinHeight="180" MaxWidth="330" MaxHeight="190">
         
     <Grid TextBlock.FontSize="14">
         <Grid.RowDefinitions>
@@ -15,16 +15,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Padding="3" Margin="3">Flight Server IP:</TextBlock>
-        <TextBox x:Name="txtIP" Grid.Column="2" Padding="3" Margin="3"></TextBox>
+        <TextBox x:Name="txtIP" Grid.Column="2" Padding="3" Margin="3"  Text="{Binding FlightServerIP}"></TextBox>
         <TextBlock Grid.Row="1" Padding="3" Margin="3">Flight Info Port:</TextBlock>
-        <TextBox x:Name="txtPort" Grid.Row="1" Grid.Column="2" Padding="3"
+        <TextBox x:Name="txtPort" Grid.Row="1" Grid.Column="2" Padding="3"  Text="{Binding FlightInfoPort}"
 Margin="3"></TextBox>
         <TextBlock Grid.Row="2" Padding="3" Margin="3">Flight Command Port:</TextBlock>
-        <TextBox x:Name="txtComPort" Grid.Row="2" Grid.Column="2" Padding="3"
+        <TextBox x:Name="txtComPort" Grid.Row="2" Grid.Column="2" Padding="3"  Text="{Binding FlightCommandPort}"
 Margin="3"></TextBox>
         <Button x:Name="btnOk" Grid.Row="3" HorizontalAlignment="Right"
 Grid.Column="0" Click="btn_OK" Margin="5" Padding="5">OK</Button>

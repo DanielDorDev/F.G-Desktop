@@ -22,6 +22,7 @@ namespace FlightSimulator
         ViewModels.Windows.SettingsWindowViewModel VM_settings;
         public MainWindow()
         {
+
             VM_settings = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
             InitializeComponent();
         }
@@ -29,8 +30,13 @@ namespace FlightSimulator
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Views.Windows.SettingsWindow objSettings = new Views.Windows.SettingsWindow();
-            objSettings.Show();
+            objSettings.ShowDialog();
         }
+        private void Connect_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
     }
 }
