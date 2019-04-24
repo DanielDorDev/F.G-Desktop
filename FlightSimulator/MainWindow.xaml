@@ -6,22 +6,77 @@
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="850">
+        Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950">
     <Grid>
 
-        <Views:FlightBoard HorizontalAlignment="Left" Height="373" VerticalAlignment="Top" Width="380" Margin="0,47,0,0"/>
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="121,15,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Settings" HorizontalAlignment="Center" Margin="222,15,496.6,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TabControl HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="458" Margin="385,0,0,0">
-            <TabItem Header="Manual">
-                <Grid Background="#FFE5E5E5">
-                    <Views:Joystick HorizontalAlignment="Right" Height="350" VerticalAlignment="Top" Width="375" Margin="0,10,20,0"/>
+        <Views:FlightBoard HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="447" Margin="0,40,0,0"/>
+        <Button Content="Connect" HorizontalAlignment="Left" Margin="162,11,0,0" VerticalAlignment="Top" Width="55"/>
+        <Button Content="Settings" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55" Click="Button_Click"/>
+        <TabControl HorizontalAlignment="Right" Height="510" VerticalAlignment="Top" Width="470" Margin="0,0,5,0">
+            <TabItem Header="Manual" FontWeight="Bold" FontSize="14">
+                <Grid>
+                    <Views:Joystick Margin="5,0,0,0"/>
+                    <Slider x:Name="rudderSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
+                    Value="0" Height="20" Width="260" Margin="97,426,92,33.5"/>
+                    <TextBox Text="{Binding ElementName=rudderSld, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
+                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="384,426,40,33.5"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="⟵ rudder ⟶" FontSize="16" FontWeight="Black" Margin="183,0,178,6.5"/>
+                    <TextBox Text="{Binding ElementName=Aileron, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20" 
+                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16"  Margin="384,22,40,437.5"/>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="⟵ aileron ⟶" FontSize="16" FontWeight="Black" Margin="183,20,178,6.5"/>
 
+                    <Slider x:Name="throttleSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
+                    Value="0" Height="20" Width="260" RenderTransformOrigin="0.5,0.5" Margin="-90,232,294,227.5">
+                        <Slider.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Slider.RenderTransform>
+                    </Slider>
+                    <TextBox Text="{Binding ElementName=rudderSld, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
+                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="34,68,390,391.5" RenderTransformOrigin="0.412,-0.925" />
+                    <TextBlock Text="⟵ throttle ⟶" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Black" 
+                               RenderTransformOrigin="0.5,0.5" Margin="-40,231,0,226.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+
+                    <TextBlock Text="⟵ elevator ⟶" FontSize="16" VerticalAlignment="Center" FontWeight="Black" RenderTransformOrigin="0.5,0.5" 
+                               Margin="374,231,-30,226.5">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBox Text="{Binding ElementName=Elevator, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20" 
+                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" RenderTransformOrigin="0.1,0.6" Margin="412,64,12,395.5">
+                        <TextBox.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform X="14" Y="-18"/>
+                            </TransformGroup>
+                        </TextBox.RenderTransform>
+                    </TextBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Auto Pilot">
+            <TabItem Header="Auto Pilot" FontWeight="Bold" FontSize="14">
                 <Grid Background="#FFE5E5E5"/>
-                
+
             </TabItem>
         </TabControl>
 
