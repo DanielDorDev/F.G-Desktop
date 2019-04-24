@@ -50,11 +50,11 @@ namespace FlightSimulator.Model
         {
             get
             {
-                return Lon;
+                return Lat;
             }
             set
             {
-                Lon = value;
+                Lat = value;
                 NotifyPropertyChanged("latitude_deg");
             }
         }

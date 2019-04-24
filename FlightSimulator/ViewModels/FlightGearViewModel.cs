@@ -17,15 +17,33 @@ namespace FlightSimulator.ViewModels
             this.model = model;
             //model.PropertyChanged+=...
         }
-     //   public event PropertyChangedEventHandler PropertyChanged;
-      //  public void NotifyPropertyChanged(string propName) {...}
 
-    //    public double VM_value(string key)
-      //  {
-      //      return model[key];
-       // }
-
-
+        public event PropertyChangedEventHandler PropertyChanged;
+       // public void NotifyPropertyChanged(string propName) {...}
+        public double VM_Lon
+        {
+            get
+            {
+                return VM_Lon;
+            }
+            set
+            {
+                Lon = value;
+                NotifyPropertyChanged("longitude_deg");
+            }
+        }
+        public double VM_Lat
+        {
+            get
+            {
+                return VM_Lat;
+            }
+            set
+            {
+                Lat = value;
+                
+            }
+        }
 
     }
 }
