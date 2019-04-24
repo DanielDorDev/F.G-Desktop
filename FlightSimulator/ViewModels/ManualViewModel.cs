@@ -8,12 +8,12 @@ namespace FlightSimulator.ViewModels
 {
     class ManualViewModel : BaseNotify
     {
-        private ManualModel model;
+        /*private ManualModel model;
 
         ManualViewModel(ManualModel model)
         {
             this.model = model;
-        }
+        }*/
 
         public double VM_Throttle
         {
