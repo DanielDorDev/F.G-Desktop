@@ -18,7 +18,8 @@ namespace FlightSimulator.Model
 
         private ITelnetClient telnetClient;
         private ITelnetServer telnetServer;
-        volatile Boolean stop;
+        volatile Boolean stop;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double Lon
@@ -43,7 +44,8 @@ namespace FlightSimulator.Model
                 Lon = value;
                 NotifyPropertyChanged("longitude_deg");
             }
-        }
+        }
+
 
         public FlightGearModel(ITelnetClient setClient, ITelnetServer setServer)
         {
@@ -53,7 +55,8 @@ namespace FlightSimulator.Model
 
 
 
-        }
+        }
+
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
             telnetClient.Connect(txtIP, txtPort);
@@ -75,7 +78,8 @@ namespace FlightSimulator.Model
         public void Disconnect()
         {
             stop = true;
-            telnetClient.Disconnect();            telnetServer.Disconnect();
+            telnetClient.Disconnect();
+            telnetServer.Disconnect();
         }
 
         public void Send(string msg)
