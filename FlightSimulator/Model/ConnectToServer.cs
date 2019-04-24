@@ -16,6 +16,21 @@ namespace FlightSimulator.Model
         IPEndPoint ep;
         TcpClient client = new TcpClient();
 
+        #region Singleton
+        private static Interface.ITelnetClient m_Instance = null;
+        public static Interface.ITelnetClient Instance
+        {
+            get
+            {
+                if (m_Instance == null)
+                {
+                    m_Instance = new ConnectToServer();
+                }
+                return m_Instance;
+            }
+        }
+        #endregion
+
         public void Connect(string ip, int port)
         {
             ep = new IPEndPoint(IPAddress.Parse(ip), port);

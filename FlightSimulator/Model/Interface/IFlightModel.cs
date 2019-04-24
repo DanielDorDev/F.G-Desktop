@@ -8,12 +8,9 @@ namespace FlightSimulator.Model.Interface
 {
     interface IFlightModel : System.ComponentModel.INotifyPropertyChanged
     {
-        // connection to the robot
         void Connect(string ip, int port, int portCom);
         void Disconnect();
 
-        // activate actuators
         void Send(string msg);
-        
     }
 }

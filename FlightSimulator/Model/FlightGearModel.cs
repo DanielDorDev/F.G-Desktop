@@ -14,6 +14,19 @@ namespace FlightSimulator.Model
     class FlightGearModel : Interface.IFlightModel
     {
 
+        #region Singleton
+        private static Interface.IFlightModel m_Instance = null;
+        public static Interface.IFlightModel Instance(ITelnetClient setClient, ITelnetServer setServer)
+        {
+
+                if (m_Instance == null)
+                {
+                    m_Instance = new FlightGearModel(setClient, setServer);
+                }
+                return m_Instance;
+        }
+        #endregion
+
 
 
         private ITelnetClient telnetClient;
@@ -42,7 +55,7 @@ namespace FlightSimulator.Model
             set
             {
                 Lon = value;
-                NotifyPropertyChanged("longitude_deg");
+                NotifyPropertyChanged("latitude_deg");
             }
         }
 
@@ -52,24 +65,30 @@ namespace FlightSimulator.Model
             this.telnetClient = setClient;
             this.telnetServer = setServer;
             stop = false;
-
-
-
         }
 
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
             telnetClient.Connect(txtIP, txtPort);
             telnetServer.Connect(txtCommandPort);
+            /*
+            Properties.Settings.Default.FlightCommandPort;
+            Properties.Settings.Default.FlightServerIP;
+            Properties.Settings.Default.FlightInfoPort;
+            */
+
+
 
             new Thread(delegate () {
 
                 while (!stop)
                 {
-                    lock (this)
+                double[] data = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
+                    Lon = data[0];
+                    Lat = data[1];
+                lock (this)
                     {
-                  //  telnetServer.Read().Split(','), Double.Parse);
-        }
+                     }
                     Thread.Sleep(250);// read every 4HZ seconds.
                 }
             }).Start();

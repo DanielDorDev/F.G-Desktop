@@ -16,9 +16,25 @@ namespace FlightSimulator.Model
         TcpListener listener;
         TcpClient client;
 
+        #region Singleton
+        private static Interface.ITelnetServer m_Instance = null;
+        public static Interface.ITelnetServer Instance
+        {
+            get
+            {
+                if (m_Instance == null)
+                {
+                    m_Instance = new CreateServer();
+                }
+                return m_Instance;
+            }
+        }
+        #endregion
+
+
         public void Connect(int port)
         {
-            ep = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+            ep = new IPEndPoint(IPAddress.Any, port);
             listener = new TcpListener(ep);
             listener.Start();
             client = listener.AcceptTcpClient();
@@ -36,6 +52,7 @@ namespace FlightSimulator.Model
             using (BinaryReader reader = new BinaryReader(stream))
             {
                 return reader.ReadString();
-            }        }
+            }
+        }
     }
 }
