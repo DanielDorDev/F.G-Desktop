@@ -7,8 +7,8 @@
         xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
         Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950">
-    <Grid>
 
+    <Grid>
         <Views:FlightBoard HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="447" Margin="0,40,0,0"/>
         <Button Content="Connect" HorizontalAlignment="Left" Margin="162,11,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Content="Settings" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55" Click="Button_Click"/>
@@ -75,10 +75,8 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Auto Pilot" FontWeight="Bold" FontSize="14">
-                <Grid Background="#FFE5E5E5"/>
-
+                <Views:AutoPilot/>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>
