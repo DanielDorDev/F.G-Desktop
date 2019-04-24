@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FlightSimulator.ViewModels.Windows;
+using FlightSimulator.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,23 +22,29 @@ namespace FlightSimulator.Views.Windows
     /// </summary>
     public partial class SettingsWindow : Window
     {
+        private SettingsWindowViewModel VM_settings;
         public SettingsWindow()
         {
             InitializeComponent();
+            VM_settings = new SettingsWindowViewModel(new ApplicationSettingsModel());
+            this.DataContext = VM_settings;
         }
 
         private void btn_OK(object sender, RoutedEventArgs e)
         {
+            VM_settings.SaveSettings();
             MainWindow win = (MainWindow)Application.Current.MainWindow;
             win.Show();
-            this.Close();
+            this.Close();
+
         }
 
         private void btn_Cancel(object sender, RoutedEventArgs e)
         {
             MainWindow win = (MainWindow)Application.Current.MainWindow;
             win.Show();
-            this.Close();
+            this.Close();
+            VM_settings.ReloadSettings();
         }
     }
 }
