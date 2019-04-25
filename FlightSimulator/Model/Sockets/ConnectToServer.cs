@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FlightSimulator.Model
+namespace FlightSimulator.Model.Sockets
 {
     class ConnectToServer : Interface.ITelnetClient
     {

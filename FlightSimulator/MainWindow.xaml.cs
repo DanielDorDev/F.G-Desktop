@@ -19,24 +19,20 @@ namespace FlightSimulator
     /// </summarry>
     public partial class MainWindow : Window
     {
-        ViewModels.Windows.SettingsWindowViewModel VM_settings;
+
+
         public MainWindow()
         {
           //  InitializeComponent();
 
-            VM_settings = new ViewModels.Windows.SettingsWindowViewModel(new Model.ApplicationSettingsModel());
         }
-
+        /*
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Views.Windows.SettingsWindow objSettings = new Views.Windows.SettingsWindow();
             objSettings.ShowDialog();
         }
-        private void Connect_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
-
-
+    */
     }
 }

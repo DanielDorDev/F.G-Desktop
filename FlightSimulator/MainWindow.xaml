@@ -10,8 +10,8 @@
 
     <Grid>
         <Views:FlightBoard HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="447" Margin="0,40,0,0"/>
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="162,11,0,0" VerticalAlignment="Top" Width="55"/>
-        <Button Content="Settings" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55" Click="Button_Click"/>
+        <Button Content="Connect" Command="{Binding ConnectCommand}" HorizontalAlignment="Left" Margin="162,11,0,0" VerticalAlignment="Top" Width="55"/>
+        <Button Content="Settings" Command="{Binding SettingsCommand}" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55"/>
         <TabControl HorizontalAlignment="Right" Height="510" VerticalAlignment="Top" Width="470" Margin="0,0,5,0">
             <TabItem Header="Manual" FontWeight="Bold" FontSize="14">
                 <Grid>

@@ -71,11 +71,7 @@ namespace FlightSimulator.Model
         {
             telnetClient.Connect(txtIP, txtPort);
             telnetServer.Connect(txtCommandPort);
-            /*
-            Properties.Settings.Default.FlightCommandPort;
-            Properties.Settings.Default.FlightServerIP;
-            Properties.Settings.Default.FlightInfoPort;
-            */
+
 
 
 
