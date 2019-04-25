@@ -30,7 +30,7 @@ namespace FlightSimulator.Views.Windows
             this.DataContext = VM_settings;
         }
 
-        private void btn_OK(object sender, RoutedEventArgs e)
+        private void Btn_OK(object sender, RoutedEventArgs e)
         {
             VM_settings.SaveSettings();
             MainWindow win = (MainWindow)Application.Current.MainWindow;
@@ -39,7 +39,7 @@ namespace FlightSimulator.Views.Windows
 
         }
 
-        private void btn_Cancel(object sender, RoutedEventArgs e)
+        private void Btn_Cancel(object sender, RoutedEventArgs e)
         {
             MainWindow win = (MainWindow)Application.Current.MainWindow;
             win.Show();

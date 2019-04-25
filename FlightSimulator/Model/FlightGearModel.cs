@@ -30,28 +30,29 @@ namespace FlightSimulator.Model
         private ITelnetServer telnetServer;
         volatile Boolean stop;
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
+        private double _Lon;
         public double Lon
         {
             get {
-            return Lon; 
+            return _Lon; 
             }
             set
             {
-                Lon = value;
+                _Lon = value;
                 NotifyPropertyChanged("longitude_deg");
             }
         }
+        private double _Lat;
         public double Lat
         {
             get
             {
-                return Lat;
+                return _Lat;
             }
             set
             {
-                Lat = value;
+                _Lat = value;
                 NotifyPropertyChanged("latitude_deg");
             }
         }
@@ -67,18 +68,18 @@ namespace FlightSimulator.Model
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
             telnetClient.Connect(txtIP, txtPort);
-            telnetServer.Connect(txtCommandPort);
 
             new Thread(delegate () {
+                telnetServer.Connect(txtCommandPort);
 
                 while (!stop)
                 {
                 double[] data = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                    Lon = data[0];
-                    Lat = data[1];
                 lock (this)
                     {
-                     }
+                        Lon = data[0];
+                        Lat = data[1];
+                    }
                     Thread.Sleep(250);// read every 4HZ seconds.
                 }
             }).Start();
@@ -86,9 +87,13 @@ namespace FlightSimulator.Model
 
         public void Disconnect()
         {
-            stop = true;
-            telnetClient.Disconnect();
-            telnetServer.Disconnect();
+            if(stop == false)
+            {
+                stop = true;
+                telnetClient.Disconnect();
+                telnetServer.Disconnect();
+            }
+
         }
 
         public void Send(string msg)
@@ -96,8 +101,11 @@ namespace FlightSimulator.Model
             telnetClient.Write(msg);
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void NotifyPropertyChanged(string propName)
         {
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
@@ -149,28 +157,4 @@ public double engine_rpm { get; set; }
                         myFieldInfo.SetValue(change, i);
                         i++;
                     }
-
-
-myOrderedDictionary.Add("airspeed_indicator_indicated_speed_ktg", 0);
-        myOrderedDictionary.Add("altimeter_indicated_altitude_ft", 0);
-        myOrderedDictionary.Add("altimeter_pressure_alt_ft", 0);
-        myOrderedDictionary.Add("attitude_indicator_indicated_pitch_deg", 0);
-        myOrderedDictionary.Add("attitude_indicator_indicated_roll_deg", 0);
-        myOrderedDictionary.Add("attitude_indicator_internal_roll_deg", 0);
-        myOrderedDictionary.Add("encoder_indicated_altitude_ft", 0);
-        myOrderedDictionary.Add("gps_indicated_altitude_ft", 0);
-        myOrderedDictionary.Add("gps_indicated_ground_speed_kt", 0);
-        myOrderedDictionary.Add("gps_indicated_vertical_speed", 0);
-        myOrderedDictionary.Add("gps_indicated_vertical_speed", 0);
-        myOrderedDictionary.Add("indicated_heading_deg", 0);
-        myOrderedDictionary.Add("magnetic_compass_indicated_heading_deg", 0);
-        myOrderedDictionary.Add("slip_skid_ball_indicated_slip_skid", 0);
-        myOrderedDictionary.Add("turn_indicator_indicated_turn_rate", 0);
-        myOrderedDictionary.Add("vertical_speed_indicator_indicated_speed_fpm", 0);
-        myOrderedDictionary.Add("flight_aileron", 0);
-        myOrderedDictionary.Add("flight_elevator", 0);
-        myOrderedDictionary.Add("flight_rudder", 0);
-        myOrderedDictionary.Add("flight_flaps", 0);
-        myOrderedDictionary.Add("engine_throttle", 0);
-        myOrderedDictionary.Add("engine_rpm", 0);
-        */
+*/
