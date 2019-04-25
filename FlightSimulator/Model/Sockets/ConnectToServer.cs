@@ -39,7 +39,10 @@ namespace FlightSimulator.Model.Sockets
 
         public void Disconnect()
         {
-            client.Close();
+            if(client.Connected)
+            {
+                client.Close();
+            }
         }
 
         public void Write(string command)

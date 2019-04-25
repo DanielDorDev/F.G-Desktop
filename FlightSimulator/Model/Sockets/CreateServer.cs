@@ -42,8 +42,15 @@ namespace FlightSimulator.Model.Sockets
 
         public void Disconnect()
         {
-            client.Close();
-            listener.Stop();
+            if (client != null && client.Connected)
+            {
+                client.Close();
+            }
+           
+            if(listener != null)
+            {
+                listener.Stop();
+            }
         }
 
         public string Read()
