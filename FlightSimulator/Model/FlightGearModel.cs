@@ -69,9 +69,6 @@ namespace FlightSimulator.Model
             telnetClient.Connect(txtIP, txtPort);
             telnetServer.Connect(txtCommandPort);
 
-
-
-
             new Thread(delegate () {
 
                 while (!stop)

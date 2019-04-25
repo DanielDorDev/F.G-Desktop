@@ -13,11 +13,11 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBox x:Name="txt" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"  
-             SpellCheck.IsEnabled="True" Background="#FFF1C1C1" BorderBrush="#FFD5DFFD">
+             SpellCheck.IsEnabled="True" Background="#FFF1C1C1" BorderBrush="#FFD5DFFD" Text="{Binding commands_txt,UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
         <Button Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,60,0" Width="30" Grid.Row="1" 
-                FontWeight="Bold" FontSize="14" Click="BtnOK_Click"/>
+                FontWeight="Bold" FontSize="14" Command="{Binding OK_Command}"/>
         <Button Content="Clear" HorizontalAlignment="Center" Margin="60,0,0,0" VerticalAlignment="Center" Width="40" Grid.Row="1"
-                FontWeight="Bold" FontSize="14" Click="BtnCancel_Click"/>
+                FontWeight="Bold" FontSize="14" Command="{Binding Cancel_Command}"/>
     </Grid>
 </UserControl>

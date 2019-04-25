@@ -29,7 +29,7 @@ namespace FlightSimulator.Views
         }
 
         // now using RoutedEvent, but when a class of autoPilotViewModel is created should bind it to a property incharge on clicking the OK button.
-        private void BtnOK_Click(object sender, RoutedEventArgs e)
+        /*private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
             Button OK_button = e.Source as Button;
             txt.Background = Brushes.White;
@@ -40,6 +40,6 @@ namespace FlightSimulator.Views
         {
             Button Cancel_button = e.Source as Button;
             txt.Clear();
-        }
+        }*/
     }
 }
