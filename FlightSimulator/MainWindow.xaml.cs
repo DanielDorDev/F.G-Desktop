@@ -26,13 +26,13 @@ namespace FlightSimulator
           //  InitializeComponent();
 
         }
-        /*
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Views.Windows.SettingsWindow objSettings = new Views.Windows.SettingsWindow();
             objSettings.ShowDialog();
         }
 
-    */
+    
     }
 }

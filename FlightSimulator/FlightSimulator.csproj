@@ -34,6 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DynamicDataDisplay">
       <HintPath>..\dll\DynamicDataDisplay.dll</HintPath>
@@ -66,12 +70,16 @@
     <Compile Include="Model\ApplicationSettingsModel.cs" />
     <Compile Include="Model\AutoPilotModel.cs" />
     <Compile Include="Model\CommandHandler.cs" />
+    <Compile Include="Model\ConnectToServer.cs" />
+    <Compile Include="Model\CreateServer.cs" />
     <Compile Include="Model\EventArgs\VirtualJoystickEventArgs.cs" />
     <Compile Include="Model\FlightGearModel.cs" />
     <Compile Include="Model\Interface\IFlightModel.cs" />
     <Compile Include="Model\Interface\ISettingsModel.cs" />
     <Compile Include="Model\Interface\ITelnetClient.cs" />
     <Compile Include="Model\Interface\ITelnetServer.cs" />
+    <Compile Include="Model\ManualModel.cs" />
+    <Compile Include="ViewModels\AutoPilotViewModel.cs" />
     <Compile Include="ViewModels\BaseNotify.cs" />
     <Compile Include="ViewModels\FlightBoardViewModel.cs" />
     <Compile Include="ViewModels\FlightGearViewModel.cs" />

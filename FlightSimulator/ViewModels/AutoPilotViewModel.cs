@@ -1,20 +1,6 @@
-﻿using FlightSimulator.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FlightSimulator.ViewModels
+﻿namespace FlightSimulator.ViewModels
 {
-    class AutoPilotViewModel : BaseNotify
+    internal class AutoPilotViewModel
     {
-        private AutoPilotModel model;
-
-        public AutoPilotViewModel(AutoPilotModel model)
-        {
-            this.model = model;
-        }
-
     }
 }
