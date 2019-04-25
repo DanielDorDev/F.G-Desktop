@@ -13,7 +13,6 @@ namespace FlightSimulator.Model
 {
     class FlightGearModel : Interface.IFlightModel
     {
-
         #region Singleton
         private static Interface.IFlightModel m_Instance = null;
         public static Interface.IFlightModel Instance(ITelnetClient setClient, ITelnetServer setServer)
@@ -26,8 +25,6 @@ namespace FlightSimulator.Model
                 return m_Instance;
         }
         #endregion
-
-
 
         private ITelnetClient telnetClient;
         private ITelnetServer telnetServer;

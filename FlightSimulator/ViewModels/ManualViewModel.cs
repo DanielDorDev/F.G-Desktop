@@ -11,10 +11,7 @@ namespace FlightSimulator.ViewModels
     {
         private ManualModel model;
 
-       // ManualViewModel(ManualModel model)
-      //  {
-       //     this.model = model;
-       // }
+        ManualViewModel() => this.model = new ManualModel();
 
         public double VM_Throttle
         {
@@ -25,7 +22,7 @@ namespace FlightSimulator.ViewModels
         public double VM_Rudder
         {
             set => this.model.ChangeValue($"set /controls/flight/rudder {value.ToString()}");
-            get => this.model.Throttle;
+            get => this.model.Rudder;
         }
 
         public void Joystick_Move (Views.Joystick sender, Model.EventArgs.VirtualJoystickEventArgs eventArgs)

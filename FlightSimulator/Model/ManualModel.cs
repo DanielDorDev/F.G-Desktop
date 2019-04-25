@@ -14,10 +14,7 @@ namespace FlightSimulator.Model
         private ITelnetClient server;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ManualModel()
-        {
-            server = ConnectToServer.Instance;
-        }
+        public ManualModel() => server = ConnectToServer.Instance;
 
         public double Rudder
         {
