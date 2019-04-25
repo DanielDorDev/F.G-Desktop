@@ -34,7 +34,7 @@ namespace FlightSimulator.Model.Sockets
         public void Connect(string ip, int port)
         {
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
-            client.Connect(ep);
+       //     client.Connect(ep);
         }
 
         public void Disconnect()

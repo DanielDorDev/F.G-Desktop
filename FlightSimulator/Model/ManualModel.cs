@@ -63,7 +63,7 @@ namespace FlightSimulator.Model
 
         public void ChangeValue(string new_value)
         {
-            this.server.Write(new_value);
+            this.server.Write(new_value + "\r\n");
         }
     }
 }

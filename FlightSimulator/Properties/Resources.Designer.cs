@@ -59,5 +59,26 @@ namespace FlightSimulator.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;doc&gt;
+        ///    &lt;assembly&gt;
+        ///        &lt;name&gt;DynamicDataDisplay&lt;/name&gt;
+        ///    &lt;/assembly&gt;
+        ///    &lt;members&gt;
+        ///        &lt;member name=&quot;T:Microsoft.Research.DynamicDataDisplay.Common.D3Collection`1&quot;&gt;
+        ///            &lt;summary&gt;
+        ///            This is a base class for some DynamicDataDisplay collections.
+        ///            It provides means to be notified about item adding and added events, which enables successors to, for example,
+        ///            check if adding item is not equal to null.
+        ///            &lt;/summary&gt;
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DynamicDataDisplay {
+            get {
+                return ResourceManager.GetString("DynamicDataDisplay", resourceCulture);
+            }
+        }
     }
 }

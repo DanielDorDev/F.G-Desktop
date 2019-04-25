@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FlightSimulator.ViewModels;
 
 namespace FlightSimulator
 {
@@ -19,20 +20,13 @@ namespace FlightSimulator
     /// </summarry>
     public partial class MainWindow : Window
     {
-
+        MainWindowViewModel vm;
 
         public MainWindow()
         {
-          //  InitializeComponent();
-
+            vm = new MainWindowViewModel();
+            this.DataContext = vm;
+            InitializeComponent();
         }
-        
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Views.Windows.SettingsWindow objSettings = new Views.Windows.SettingsWindow();
-            objSettings.ShowDialog();
-        }
-
-    
     }
 }

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FlightSimulator.Views.Windows"
         mc:Ignorable="d"
         Title="Settings" Height="180" Width="300" WindowStyle="ToolWindow" MinWidth="300" MinHeight="180"
         MaxWidth="330" MaxHeight="190" BorderBrush="Black">
@@ -27,9 +26,9 @@
         <TextBlock Grid.Row="2" Padding="3" Margin="3">Flight Command Port:</TextBlock>
         <TextBox x:Name="txtComPort" Grid.Row="2" Grid.Column="2" Padding="3" TextAlignment="Center" Text="{Binding FlightCommandPort}" 
                  Margin="3"/>
-        <Button x:Name="btnOk" Grid.Row="3" HorizontalAlignment="Right" Grid.Column="0" Click="btn_OK" Margin="0,11.5,9.5,-1.5"
+        <Button x:Name="btnOk" Grid.Row="3" HorizontalAlignment="Right" Grid.Column="0" Click="Btn_OK" Margin="0,11.5,9.5,-1.5"
                 Padding="5">OK</Button>
-        <Button x:Name="btnCancel" Grid.Row="3" HorizontalAlignment="Left" Grid.Column="1" Click="btn_Cancel" Margin="10.5,11.5,0,-1"
+        <Button x:Name="btnCancel" Grid.Row="3" HorizontalAlignment="Left" Grid.Column="1" Click="Btn_Cancel" Margin="10.5,11.5,0,-1"
                 Padding="5">Cancel</Button>
     </Grid>
 </Window>

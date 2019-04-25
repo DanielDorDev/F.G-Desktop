@@ -6,12 +6,18 @@
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Views:FlightBoard HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="447" Margin="0,40,0,0"/>
         <Button Content="Connect" Command="{Binding ConnectCommand}" HorizontalAlignment="Left" Margin="162,11,0,0" VerticalAlignment="Top" Width="55"/>
-        <Button Content="Settings" Click="Button_Click" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55"/>
+        <Button Content="Settings" Command="{Binding SettingsCommand}" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55"/>
         <TabControl HorizontalAlignment="Right" Height="510" VerticalAlignment="Top" Width="470" Margin="0,0,5,0">
             <TabItem Header="Manual" FontWeight="Bold" FontSize="14">
                 <Grid>
