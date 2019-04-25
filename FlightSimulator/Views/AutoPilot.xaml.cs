@@ -20,9 +20,11 @@ namespace FlightSimulator.Views
     /// </summary>
     public partial class AutoPilot : UserControl
     {
+        private ViewModels.AutoPilotViewModel VM_autoPilot;
         public AutoPilot()
         {
             InitializeComponent();
+            this.DataContext = VM_autoPilot;
         }
 
         // now using RoutedEvent, but when a class of autoPilotViewModel is created should bind it to a property incharge on clicking the OK button.
