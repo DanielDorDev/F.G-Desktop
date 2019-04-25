@@ -2,10 +2,12 @@
 using FlightSimulator.Model.Sockets;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace FlightSimulator.Model
 {
@@ -15,7 +17,17 @@ namespace FlightSimulator.Model
 
         public AutoPilotModel() => server = ConnectToServer.Instance;
 
-        public void SendCommands (string commands_txt)
+        private bool _change_Background;
+        public bool Change_Background
+        {
+            set
+            {
+                this._change_Background = value;
+            }
+            get { return this._change_Background; }
+        }
+
+        public void SendCommands(string commands_txt)
         {
             if (string.IsNullOrEmpty(commands_txt))
             {
@@ -26,15 +38,16 @@ namespace FlightSimulator.Model
             //Interpret(ref arr, commands);
 
             string[] commands = commands_txt.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            for(int i = 0; i < commands.Length; i++)
+            new Thread(delegate ()
             {
-                new Thread(delegate () {
+                for (int i = 0; i < commands.Length; i++)
+                {
                     this.server.Write(commands[i]);
                     Thread.Sleep(200);
-                }).Start();
-            }
+                }
+            }).Start();
         }
-       
+        
         /*private void Interpret (ref List<string> arr,string toInterpret)
         {
             string temp ="";

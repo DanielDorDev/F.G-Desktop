@@ -27,19 +27,5 @@ namespace FlightSimulator.Views
             this.VM_autoPilot = new ViewModels.AutoPilotViewModel();
             this.DataContext = VM_autoPilot;
         }
-
-        // now using RoutedEvent, but when a class of autoPilotViewModel is created should bind it to a property incharge on clicking the OK button.
-        /*private void BtnOK_Click(object sender, RoutedEventArgs e)
-        {
-            Button OK_button = e.Source as Button;
-            txt.Background = Brushes.White;
-        }
-
-        // now using RoutedEvent, but when a class of autoPilotViewModel is created should bind it to a property incharge on clicking the Cancel button.
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Button Cancel_button = e.Source as Button;
-            txt.Clear();
-        }*/
     }
 }

@@ -11,26 +11,48 @@ namespace FlightSimulator.ViewModels
     class AutoPilotViewModel : BaseNotify
     {
         private AutoPilotModel model;
-        private string commands_txt;
         private ICommand _OK_Command;
         private ICommand _Cancel_Command;
+        private string commands_txt;
 
-        public AutoPilotViewModel() => this.model = new AutoPilotModel();
-
-        public ICommand OK_Command
+        public AutoPilotViewModel()
         {
-            get
-            {
-                return _OK_Command ?? (_OK_Command = new CommandHandler(() => { model.SendCommands(commands_txt); }));
-            }
+            this.model = new AutoPilotModel();
+            this.VM_Change_Background = true;
         }
 
-        public ICommand Cancel_Command
+        public bool VM_Change_Background
         {
-            get
+            set
             {
-                return _Cancel_Command ?? (_Cancel_Command = new CommandHandler(() => { commands_txt=""; }));
+                this.model.Change_Background = value;
+                NotifyPropertyChanged("VM_Change_Background");
+            }
+            get { return this.model.Change_Background; }
+        }
+
+        public string VM_Commands_txt
+        {
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    VM_Change_Background = false;
+                }
+                commands_txt = value;
+                NotifyPropertyChanged("VM_Commands_txt");
             }
         }
+        public ICommand OK_Command => _OK_Command ?? (_OK_Command = new CommandHandler(() =>
+        {
+            model.SendCommands(commands_txt);
+            this.VM_Change_Background = true;
+        }));
+
+        public ICommand Cancel_Command => _Cancel_Command ?? (_Cancel_Command = new CommandHandler(() =>
+        {
+            VM_Commands_txt = "";
+            this.VM_Change_Background = true;
+        }));
     }
 }

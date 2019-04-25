@@ -7,13 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="470" d:DesignWidth="460">
     
+    <UserControl.Resources>
+        <local:ButtonClickToBackgroundConvertor x:Key="ButtonClickToBackgroundConvertor"/>
+    </UserControl.Resources>
+    
     <Grid Width="460" Height="470">
         <Grid.RowDefinitions>
             <RowDefinition Height="6*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBox x:Name="txt" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True"  
-             SpellCheck.IsEnabled="True" Background="#FFF1C1C1" BorderBrush="#FFD5DFFD" Text="{Binding commands_txt,UpdateSourceTrigger=PropertyChanged}">
+             SpellCheck.IsEnabled="True" Background="{Binding VM_Change_Background, Converter={StaticResource ButtonClickToBackgroundConvertor}, UpdateSourceTrigger=PropertyChanged}"
+                 BorderBrush="#FFD5DFFD" Text="{Binding VM_Commands_txt,UpdateSourceTrigger=PropertyChanged}">
         </TextBox>
         <Button Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,60,0" Width="30" Grid.Row="1" 
                 FontWeight="Bold" FontSize="14" Command="{Binding OK_Command}"/>
