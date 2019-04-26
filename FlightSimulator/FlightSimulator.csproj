@@ -46,7 +46,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,7 +80,7 @@
     <Compile Include="Model\Interface\ITelnetServer.cs" />
     <Compile Include="Model\ManualModel.cs" />
     <Compile Include="ViewModels\AutoPilotViewModel.cs" />
-    <Compile Include="ViewModels\BaseNotify.cs" />
+    <Compile Include="ViewModels\Interface\BaseNotify.cs" />
     <Compile Include="ViewModels\FlightBoardViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManualViewModel.cs" />

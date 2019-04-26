@@ -12,7 +12,6 @@ namespace FlightSimulator.Model
     class ManualModel
     {
         private ITelnetClient server;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public ManualModel() => server = ConnectToServer.Instance;
 
@@ -22,7 +21,7 @@ namespace FlightSimulator.Model
             set
             {
                 this.Rudder = value;
-                NotifyPropertyChanged("flight_rudder");
+                ChangeValue("/controls/flight/rudder", value);
             }
         }
 
@@ -32,38 +31,10 @@ namespace FlightSimulator.Model
             set
             {
                 this.Throttle = value;
-                NotifyPropertyChanged("engine_throttle");
+                ChangeValue("/controls/engines/current-engine/throttle", value);
             }
         }
 
-        public double Aileron
-        {
-            get => this.Aileron;
-            set
-            {
-                this.Aileron = value;
-                NotifyPropertyChanged("flight_aileron");
-            }
-        }
-
-        public double Elevator
-        {
-            get => this.Elevator;
-            set
-            {
-                this.Elevator = value;
-                NotifyPropertyChanged("flight_elevator");
-            }
-        }
-
-        public void NotifyPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
-
-        public void ChangeValue(string new_value)
-        {
-            this.server.Write(new_value + "\r\n");
-        }
+        public void ChangeValue(string path, double new_value) => server.Write("set " + path + " " + new_value.ToString() + "\r\n");
     }
 }
