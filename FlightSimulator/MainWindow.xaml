@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightSimulator"
-        xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
+        xmlns:Views="clr-namespace:FlightSimulator.Views" xmlns:ViewModels="clr-namespace:FlightSimulator.ViewModels" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
         Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950">
 
@@ -15,19 +15,24 @@
         <TabControl HorizontalAlignment="Right" Height="510" VerticalAlignment="Top" Width="470" Margin="0,0,5,0">
             <TabItem Header="Manual" FontWeight="Bold" FontSize="14">
                 <Grid>
+                    <Grid.DataContext>
+                        <ViewModels:ManualViewModel/>
+                    </Grid.DataContext>
                     <Views:Joystick Margin="5,0,0,0"/>
                     <Slider x:Name="rudderSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                    Value="0" Height="20" Width="260" Margin="97,426,92,33.5"/>
-                    <TextBox Text="{Binding ElementName=rudderSld, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
+                    Value="{Binding VM_Rudder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="260" Margin="97,426,92,33.5"
+                            SmallChange="0.1" LargeChange="0.1"/>
+                    <TextBox Text="{Binding Value, ElementName=rudderSld, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
                              Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="384,426,40,33.5"/>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="← rudder →" FontSize="16" FontWeight="Black" Margin="183,0,178,6.5"/>
-                    
-                    <TextBox Text="{Binding ElementName=Aileron, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20" 
+
+                    <TextBox Text="{Binding Value, ElementName=Aileron, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20" 
                              Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16"  Margin="384,22,40,437.5"/>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="← aileron →" FontSize="16" FontWeight="Black" Margin="183,20,178,6.5"/>
 
                     <Slider x:Name="throttleSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                    Value="0" Height="20" Width="260" RenderTransformOrigin="0.5,0.5" Margin="-90,232,294,227.5" IsDirectionReversed="True">
+                    Value="{Binding VM_Throttle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="260" RenderTransformOrigin="0.5,0.5" 
+                            Margin="-90,232,294,227.5" IsDirectionReversed="True" SmallChange="0.1" LargeChange="0.1">
                         <Slider.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -37,10 +42,10 @@
                             </TransformGroup>
                         </Slider.RenderTransform>
                     </Slider>
-                    <TextBox Text="{Binding ElementName=throttleSld, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
+                    <TextBox Text="{Binding Value, ElementName=throttleSld, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
                              Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="34,68,390,391.5" RenderTransformOrigin="0.412,-0.925" />
                     <TextBlock Text="← throttle →" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Black" 
-                               RenderTransformOrigin="0.5,0.5" Margin="-37,231,0,226.5">
+                               RenderTransformOrigin="0.5,0.5" Margin="-37,231,-30,226.5">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -62,7 +67,7 @@
                             </TransformGroup>
                         </TextBlock.RenderTransform>
                     </TextBlock>
-                    <TextBox Text="{Binding ElementName=Elevator, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20" 
+                    <TextBox Text="{Binding Value, ElementName=Elevator, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20" 
                              Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" RenderTransformOrigin="0.1,0.6" Margin="412,64,12,395.5">
                         <TextBox.RenderTransform>
                             <TransformGroup>

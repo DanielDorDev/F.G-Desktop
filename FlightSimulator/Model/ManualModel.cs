@@ -15,22 +15,24 @@ namespace FlightSimulator.Model
 
         public ManualModel() => server = ConnectToServer.Instance;
 
+        private double _rudder;
         public double Rudder
         {
-            get => this.Rudder;
+            get => this._rudder;
             set
             {
-                this.Rudder = value;
+                this._rudder = value;
                 ChangeValue("/controls/flight/rudder", value);
             }
         }
 
+        private double _throttle;
         public double Throttle
         {
-            get => this.Throttle;
+            get => this._throttle;
             set
             {
-                this.Throttle = value;
+                this._throttle = value;
                 ChangeValue("/controls/engines/current-engine/throttle", value);
             }
         }

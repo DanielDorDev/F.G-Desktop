@@ -20,13 +20,13 @@ namespace FlightSimulator
     /// </summarry>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel vm;
+        private MainWindowViewModel viewModel;
 
         public MainWindow()
         {
-            vm = new MainWindowViewModel();
-            this.DataContext = vm;
             InitializeComponent();
+            viewModel = new MainWindowViewModel();
+            this.DataContext = viewModel;
         }
     }
 }
