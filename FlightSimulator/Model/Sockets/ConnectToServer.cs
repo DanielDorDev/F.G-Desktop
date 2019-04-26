@@ -84,9 +84,9 @@ namespace FlightSimulator.Model.Sockets
                 if (client.Connected)
                 {
                     using (NetworkStream stream = client.GetStream())
-                    using (BinaryWriter writer = new BinaryWriter(stream))
+                    using (StreamWriter writer = new StreamWriter(stream))
                     {
-                        writer.Write(command);
+                        writer.WriteLine(command);
                         writer.Flush();
                     }
                 }
