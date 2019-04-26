@@ -5,16 +5,24 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-
+using System.Threading;
+using FlightSimulator.Model.Interface;
+using FlightSimulator.Properties;
 
 namespace FlightSimulator.Model.Sockets
 {
     class CreateServer : Interface.ITelnetServer
     {
-
         IPEndPoint ep;
         TcpListener listener;
         TcpClient client;
+        volatile bool stop = true;
+        public bool Stop { get => stop; set => stop = value; }
+
+        public int Port { get => ep.Port; }
+
+        volatile private string _Data = string.Empty;
+        public string Data { get => _Data; set => _Data = value; }
 
         #region Singleton
         private static Interface.ITelnetServer m_Instance = null;
@@ -24,24 +32,55 @@ namespace FlightSimulator.Model.Sockets
             {
                 if (m_Instance == null)
                 {
-                    m_Instance = new CreateServer();
+                    m_Instance = new CreateServer(Settings.Default.FlightInfoPort);
                 }
                 return m_Instance;
             }
         }
         #endregion
 
-
-        public void Connect(int port)
+        public CreateServer(int port)
         {
             ep = new IPEndPoint(IPAddress.Any, port);
             listener = new TcpListener(ep);
-            listener.Start();
-            client = listener.AcceptTcpClient();
         }
 
+        public void Connect()
+        {
+            if (!IsConnected())
+            {
+            stop = false;
+            listener.Start();
+            new Thread(delegate () {
+                client = listener.AcceptTcpClient();
+                using (NetworkStream stream = client.GetStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    while (!stop)
+                    {
+                        lock (Data)
+                        {
+
+                            Data = reader.ReadLine();
+                        }
+                    }
+                    Thread.Sleep(250);// read every 4HZ seconds.
+                }
+            }).Start();
+            }
+        }
+
+
+        public void ReConnect(int port)
+        {
+            Disconnect();
+            ep = new IPEndPoint(IPAddress.Any, port);
+            Connect();
+
+        }
         public void Disconnect()
         {
+            stop = true;
             if (client != null && client.Connected)
             {
                 client.Close();
@@ -52,13 +91,28 @@ namespace FlightSimulator.Model.Sockets
                 listener.Stop();
             }
         }
+        public bool IsConnected()
+        {
+            try
+            {
+                if (stop)
+                {
+                    return false;
+                }
+                return this.listener.Pending();
+
+            }
+            catch (InvalidOperationException e)
+            {
+                return false;
+            }
+        }
 
         public string Read()
         {
-            using (NetworkStream stream = client.GetStream())
-            using (BinaryReader reader = new BinaryReader(stream))
+            lock (Data)
             {
-                return reader.ReadString();
+                return Data;
             }
         }
     }

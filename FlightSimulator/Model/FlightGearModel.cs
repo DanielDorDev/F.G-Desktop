@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FlightSimulator.Model.Interface;
+using FlightSimulator.Model.Sockets;
 
 namespace FlightSimulator.Model
 {
@@ -15,12 +16,12 @@ namespace FlightSimulator.Model
     {
         #region Singleton
         private static Interface.IFlightModel m_Instance = null;
-        public static Interface.IFlightModel Instance(ITelnetClient setClient, ITelnetServer setServer)
+        public static Interface.IFlightModel Instance()
         {
 
                 if (m_Instance == null)
                 {
-                    m_Instance = new FlightGearModel(setClient, setServer);
+                    m_Instance = new FlightGearModel(CreateServer.Instance, ConnectToServer.Instance);
                 }
                 return m_Instance;
         }
@@ -57,35 +58,38 @@ namespace FlightSimulator.Model
             }
         }
 
-
-        public FlightGearModel(ITelnetClient setClient, ITelnetServer setServer)
+        public FlightGearModel(ITelnetServer setServer, ITelnetClient setClient)
         {
-            this.telnetClient = setClient;
             this.telnetServer = setServer;
-            stop = false;
+            this.telnetServer.Connect();
+            this.telnetClient = setClient;
+            this.telnetClient.Connect();
         }
+
 
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
-            new Thread(delegate ()
+
+            
+            if (txtPort != telnetServer.Port)
             {
-                telnetClient.Connect(txtIP, txtCommandPort);
-            }).Start();
+                telnetServer.ReConnect(txtPort);
+            }
+            else if (!telnetServer.IsConnected())
+            {
+                telnetServer.Connect();
 
-            new Thread(delegate () {
-                telnetServer.Connect(txtPort);
+            }
 
-                while (!stop)
-                {
-                double[] data = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                lock (this)
-                    {
-                        Lon = data[0];
-                        Lat = data[1];
-                    }
-                    Thread.Sleep(250);// read every 4HZ seconds.
-                }
-            }).Start();
+            if (txtCommandPort != telnetClient.Port || txtIP != telnetClient.Ip)
+            {
+                telnetClient.ReConnect(txtIP, txtCommandPort);
+            }
+            else if (!telnetClient.IsConnected())
+            {
+                telnetClient.Connect();
+
+            }
         }
 
         public void Disconnect()

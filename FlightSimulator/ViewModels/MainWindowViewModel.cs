@@ -27,8 +27,7 @@ Properties.Settings.Default.FlightInfoPort;
 
         public MainWindowViewModel()
         {
-            this.model = new FlightGearModel(new ConnectToServer(), new CreateServer());
-
+            this.model = FlightGearModel.Instance();
 
             model.PropertyChanged += 
             delegate (Object sender, PropertyChangedEventArgs e)
@@ -44,6 +43,9 @@ Properties.Settings.Default.FlightInfoPort;
 
 
         }
+        
+
+
         #region Commands
         #region ConnectCommand
         private ICommand _connectCommand;

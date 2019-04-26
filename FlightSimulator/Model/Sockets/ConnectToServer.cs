@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightSimulator.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,8 +15,11 @@ namespace FlightSimulator.Model.Sockets
     {
 
         IPEndPoint ep;
-        TcpClient client = new TcpClient();
+        TcpClient client;
 
+        public string Ip { get => ep.Address.ToString(); }
+
+        public int Port { get => ep.Port; }
         #region Singleton
         private static Interface.ITelnetClient m_Instance = null;
         public static Interface.ITelnetClient Instance
@@ -24,22 +28,50 @@ namespace FlightSimulator.Model.Sockets
             {
                 if (m_Instance == null)
                 {
-                    m_Instance = new ConnectToServer();
+                    m_Instance = new ConnectToServer(Settings.Default.FlightServerIP, Settings.Default.FlightCommandPort);
                 }
                 return m_Instance;
             }
         }
         #endregion
 
-        public void Connect(string ip, int port)
+        public ConnectToServer(string ip, int port)
         {
+            client = new TcpClient();
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
-       //     client.Connect(ep);
+        }
+
+        public bool IsConnected()
+        {
+            return client.Connected;
+        }
+
+        public void Connect()
+        {
+            try
+            {
+                if (!client.Connected)
+                {
+                    client = new TcpClient();
+                    client.Connect(ep);
+                }
+            }
+            catch (SocketException e)
+            {
+
+            }
+        }
+
+        public void ReConnect(string ip, int port)
+        {
+            Disconnect();
+            ep = new IPEndPoint(IPAddress.Parse(ip), port);
+            Connect();
         }
 
         public void Disconnect()
         {
-            if(client.Connected)
+            if (client.Connected)
             {
                 client.Close();
             }
@@ -47,11 +79,21 @@ namespace FlightSimulator.Model.Sockets
 
         public void Write(string command)
         {
-            using (NetworkStream stream = client.GetStream())
-            using (BinaryWriter writer = new BinaryWriter(stream))
+            try
             {
-                writer.Write(command);
-                writer.Flush();
+                if (client.Connected)
+                {
+                    using (NetworkStream stream = client.GetStream())
+                    using (BinaryWriter writer = new BinaryWriter(stream))
+                    {
+                        writer.Write(command);
+                        writer.Flush();
+                    }
+                }
+            }
+            catch (SocketException e)
+            {
+
             }
         }
     }

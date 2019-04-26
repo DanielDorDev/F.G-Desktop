@@ -8,7 +8,10 @@ namespace FlightSimulator.Model.Interface
 {
     interface ITelnetServer
     {
-        void Connect(int port);
+        int Port { get;}
+        bool IsConnected();
+        void Connect();
+        void ReConnect(int port);
         string Read();
         void Disconnect();
     }
