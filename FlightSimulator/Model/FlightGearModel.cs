@@ -67,10 +67,13 @@ namespace FlightSimulator.Model
 
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
-            telnetClient.Connect(txtIP, txtPort);
+            new Thread(delegate ()
+            {
+                telnetClient.Connect(txtIP, txtCommandPort);
+            }).Start();
 
             new Thread(delegate () {
-                telnetServer.Connect(txtCommandPort);
+                telnetServer.Connect(txtPort);
 
                 while (!stop)
                 {
