@@ -14,7 +14,7 @@ namespace FlightSimulator.ViewModels
         IFlightModel model;
         public FlightBoardViewModel()
         {
-            this.model = FlightGearModel.Instance();
+            this.model = FlightGearModel.Instance;
 
             this.model.PropertyChanged +=          
                 delegate (Object sender, PropertyChangedEventArgs e) {

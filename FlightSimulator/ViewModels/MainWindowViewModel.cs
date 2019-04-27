@@ -20,7 +20,7 @@ namespace FlightSimulator.ViewModels
 
         public MainWindowViewModel()
         {
-            this.model = FlightGearModel.Instance();
+            this.model = FlightGearModel.Instance;
 
             model.PropertyChanged += 
             delegate (Object sender, PropertyChangedEventArgs e)
