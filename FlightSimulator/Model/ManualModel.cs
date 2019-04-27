@@ -13,7 +13,7 @@ namespace FlightSimulator.Model
     {
         private IFlightModel server;
 
-        public ManualModel() => server = FlightGearModel.Instance;
+        public ManualModel() => server = FlightGearModel.Instance();
 
         private double _rudder;
         public double Rudder

@@ -15,7 +15,7 @@ namespace FlightSimulator.Model
     {
         private IFlightModel server;
 
-        public AutoPilotModel() => server = FlightGearModel.Instance;
+        public AutoPilotModel() => server = FlightGearModel.Instance();
 
         private bool _change_Background;
         public bool Change_Background
