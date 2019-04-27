@@ -10,7 +10,7 @@ namespace FlightSimulator.Model.Interface
     {
         void Connect(string ip, int port, int portCom);
         void Disconnect();
-        double GetData(string name);
+        void DataUpdate();
         void Send(string msg);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -26,6 +27,9 @@ namespace FlightSimulator.Model.Sockets
 
         #region Singleton
         private static Interface.ITelnetServer m_Instance = null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public static Interface.ITelnetServer Instance
         {
             get
@@ -60,11 +64,11 @@ namespace FlightSimulator.Model.Sockets
                     {
                         lock (Data)
                         {
-
                             Data = reader.ReadLine();
+                            NotifyPropertyChanged("DataHasChanged");
                         }
                     }
-                    Thread.Sleep(250);// read every 4HZ seconds.
+                    Thread.Sleep(100);// read every 10HZ seconds.
                 }
             }).Start();
             }
@@ -114,6 +118,13 @@ namespace FlightSimulator.Model.Sockets
             {
                 return Data;
             }
+        }
+
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlightSimulator.Model.Interface
 {
-    interface ITelnetServer
+    interface ITelnetServer : System.ComponentModel.INotifyPropertyChanged
     {
         int Port { get;}
         bool IsConnected();
@@ -14,5 +14,6 @@ namespace FlightSimulator.Model.Interface
         void ReConnect(int port);
         string Read();
         void Disconnect();
+
     }
 }

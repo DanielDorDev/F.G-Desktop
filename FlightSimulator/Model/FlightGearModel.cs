@@ -61,7 +61,6 @@ namespace FlightSimulator.Model
                     _Lat = value;
                     NotifyPropertyChanged("Lat");
                 }
-
             }
         }
 
@@ -73,11 +72,11 @@ namespace FlightSimulator.Model
             this.telnetClient.Connect();
         }
 
-        public double GetData(string name)
+        public void DataUpdate()
         {
-
-           
-            throw new NotImplementedException();
+            double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
+            Lon = fieldChange[0];
+            Lat = fieldChange[1];
         }
 
 
