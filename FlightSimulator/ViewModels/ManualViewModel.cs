@@ -15,30 +15,23 @@ namespace FlightSimulator.ViewModels
         {
             this.model = new ManualModel();
         }
+
         public double VM_Throttle
         {
-            set
-            {
-                this.model.Throttle = value;
-                NotifyPropertyChanged("VM_Throttle");
-            }
-
-            get => this.model.Throttle;
+            set => this.model.Throttle = value;
+            //get => this.model.Throttle;
         }
 
         public double VM_Rudder
         {
-            set
-            {
-                this.model.Rudder = value;
-                NotifyPropertyChanged("VM_Rudder");
-            }
-
-            get => this.model.Rudder;
+            set => this.model.Rudder = value;
+            //get => this.model.Rudder;
         }
 
         public void Joystick_Move (Views.Joystick sender, Model.EventArgs.VirtualJoystickEventArgs eventArgs)
         {
+            //Console.WriteLine(eventArgs.Aileron);
+            //Console.WriteLine(eventArgs.Elevator);
             this.model.ChangeValue(eventArgs.Aileron_Path, eventArgs.Aileron);
             this.model.ChangeValue(eventArgs.Elevator_Path, eventArgs.Elevator);
         }

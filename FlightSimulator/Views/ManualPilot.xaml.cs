@@ -27,7 +27,7 @@ namespace FlightSimulator.Views
             InitializeComponent();
             this.vm = new ManualViewModel();
             this.DataContext = vm;
-            this.Joystick.Moved += this.vm.Joystick_Move;
+            this.Joystick.LastMoveSample += this.vm.Joystick_Move;
         }
     }
 }

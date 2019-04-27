@@ -91,12 +91,20 @@ namespace FlightSimulator.Views
         /// <param name="args">Holds new values for Aileron and Elevator</param>
         public delegate void OnScreenJoystickEventHandler(Joystick sender, VirtualJoystickEventArgs args);
 
+        /// <summary>Delegate holding data for joystick state change</summary>
+        /// <param name="sender">The object that fired the event</param>
+        /// <param name="args">Holds new values for Aileron and Elevator</param>
+        public delegate void LastMoveJoystickEventHandler(Joystick sender, VirtualJoystickEventArgs args);
+
         /// <summary>Delegate for joystick events that hold no data</summary>
         /// <param name="sender">The object that fired the event</param>
         public delegate void EmptyJoystickEventHandler(Joystick sender);
 
         /// <summary>This event fires whenever the joystick moves</summary>
         public event OnScreenJoystickEventHandler Moved;
+
+        /// <summary>This event fires whenever the user reached it's destination according to the relevant value and released the joystick</summary>
+        public event LastMoveJoystickEventHandler LastMoveSample;
 
         /// <summary>This event fires once the joystick is released and its position is reset</summary>
         public event EmptyJoystickEventHandler Released;
@@ -170,9 +178,9 @@ namespace FlightSimulator.Views
 
         private void centerKnob_Completed(object sender, EventArgs e)
         {
+            LastMoveSample?.Invoke(this, new VirtualJoystickEventArgs { Aileron = Aileron, Elevator = Elevator });
             Aileron = Elevator = _prevAileron = _prevElevator = 0;
             Released?.Invoke(this);
         }
-
     }
 }

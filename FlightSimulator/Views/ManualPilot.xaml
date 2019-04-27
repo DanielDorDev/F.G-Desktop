@@ -10,19 +10,18 @@
     <Grid >
         <local:Joystick x:Name="Joystick" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,5"/>
         <Slider x:Name="rudderSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                Value="{Binding VM_Rudder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="260" Margin="107,426,103,34"
-                SmallChange="0.1" LargeChange="0.1"/>
-        <TextBox Text="{Binding Value, ElementName=rudderSld, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
-                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="384,426,40,33.5"/>
+                Value="{Binding VM_Rudder}" Height="20" Width="260" Margin="107,426,103,34" SmallChange="0.1" LargeChange="0.1"/>
+        <TextBox Text="{Binding ElementName=rudderSld, Path=Value}" TextAlignment="Center" Width="40" Height="20"
+                Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="384,426,40,33.5"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="← rudder →" FontSize="16" FontWeight="Black" Margin="183,0,178,6.5"/>
 
         <TextBox Text="{Binding ElementName=Joystick, Path=Aileron, StringFormat=N1}" TextAlignment="Center" Width="40" Height="20" 
-                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16"  Margin="384,22,40,437.5"/>
+                Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16"  Margin="384,22,40,437.5"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="← aileron →" FontSize="16" FontWeight="Black" Margin="183,20,178,6.5"/>
 
         <Slider x:Name="throttleSld" Minimum="0" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                    Value="{Binding VM_Throttle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="260" RenderTransformOrigin="0.5,0.5" 
-                            Margin="-87,231,297,229" IsDirectionReversed="True" SmallChange="0.1" LargeChange="0.1">
+                Value="{Binding VM_Throttle}" Height="20" Width="260" RenderTransformOrigin="0.5,0.5" Margin="-87,231,297,229" IsDirectionReversed="True"
+                SmallChange="0.1" LargeChange="0.1">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -32,7 +31,7 @@
                 </TransformGroup>
             </Slider.RenderTransform>
         </Slider>
-        <TextBox Text="{Binding Value, ElementName=throttleSld, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Width="40" Height="20"
+        <TextBox Text="{Binding ElementName=throttleSld, Path=Value}" TextAlignment="Center" Width="40" Height="20"
                              Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="34,68,390,391.5" RenderTransformOrigin="0.412,-0.925" />
         <TextBlock Text="← throttle →" FontSize="16" FontWeight="Black" 
                                RenderTransformOrigin="0.5,0.5" Margin="-25,232,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
