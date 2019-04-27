@@ -21,8 +21,10 @@ namespace FlightSimulator.Model
 
             if (m_Instance == null)
             {
-                m_Instance = new FlightGearModel(CreateServer.Instance, ConnectToServer.Instance);
+                m_Instance = new FlightGearModel(new CreateServer(Properties.Settings.Default.FlightInfoPort),
+                    new ConnectToServer(Properties.Settings.Default.FlightServerIP, Properties.Settings.Default.FlightCommandPort));
             }
+            
             return m_Instance;
         }
         #endregion
@@ -91,23 +93,18 @@ namespace FlightSimulator.Model
             }
         }
 
-
         public FlightGearModel(BaseServer setServer, BaseClient setClient)
         {
             this.telnetServer = setServer;
             this.telnetServer.NotifyDataRecv += DataUpdate;
-            this.telnetServer.NotifyDisconnected +=
-                delegate () { this.StopServer = false;};
-            this.telnetServer.NotifyConnected +=
-                delegate () { this.StopServer = true; };
+            this.telnetServer.NotifyDisconnected += delegate () { this.StopServer = true;};
+            this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
 
             this.telnetServer.Connect();
 
             this.telnetClient = setClient;
-            this.telnetClient.NotifyDisconnected +=
-                delegate () { this.StopServer = false; };
-            this.telnetClient.NotifyConnected +=
-                delegate () { this.StopServer = true; };
+            this.telnetClient.NotifyDisconnected += delegate () { this.StopServer = true; };
+            this.telnetClient.NotifyConnected += delegate () { this.StopServer = false; };
             this.telnetClient.Connect();
         }
 
@@ -127,8 +124,6 @@ namespace FlightSimulator.Model
             }
 
         }
-
-
 
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {

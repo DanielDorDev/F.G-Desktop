@@ -13,9 +13,30 @@ namespace FlightSimulator.Model
 {
     class AutoPilotModel
     {
+
+
+        #region Singleton
+        private static AutoPilotModel m_Instance = null;
+        public static AutoPilotModel Instance
+        {
+            get
+            {
+                if (m_Instance == null)
+                {
+                    m_Instance = new AutoPilotModel();
+                }
+                return m_Instance;
+            }
+        }
+        #endregion
+
         private IFlightModel server;
 
-        public AutoPilotModel() => server = FlightGearModel.Instance();
+        public AutoPilotModel()
+        {
+
+            server = FlightGearModel.Instance();
+        }
 
         private bool _change_Background;
         public bool Change_Background

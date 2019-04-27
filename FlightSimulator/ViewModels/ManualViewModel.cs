@@ -11,8 +11,10 @@ namespace FlightSimulator.ViewModels
     {
         private ManualModel model;
 
-        public ManualViewModel() => this.model = new ManualModel();
-
+        public ManualViewModel()
+        {
+            this.model = new ManualModel();
+        }
         public double VM_Throttle
         {
             set

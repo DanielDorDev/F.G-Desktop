@@ -25,23 +25,7 @@ namespace FlightSimulator.Model.Sockets
         private string _Data = string.Empty;
         public string Data { get => _Data; set => _Data = value; }
 
-        #region Singleton
-        private static BaseServer m_Instance = null;
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public static BaseServer Instance
-        {
-            get
-            {
-                if (m_Instance == null)
-                {
-                    m_Instance = new CreateServer(Settings.Default.FlightInfoPort);
-                }
-                return m_Instance;
-            }
-        }
-        #endregion
 
         public CreateServer(int port)
         {
@@ -54,6 +38,7 @@ namespace FlightSimulator.Model.Sockets
             if (!IsConnected())
             {
             stop = false;
+            NotifyServerConnectedEvent();
             listener.Start();
             new Thread(delegate () {
                 client = listener.AcceptTcpClient();

@@ -20,6 +20,7 @@ namespace FlightSimulator.ViewModels
                 delegate (Object sender, PropertyChangedEventArgs e) {
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
+
         }
         public double Lon
         {

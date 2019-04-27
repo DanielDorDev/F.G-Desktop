@@ -20,20 +20,6 @@ namespace FlightSimulator.Model.Sockets
         public override string Ip { get => ep.Address.ToString(); }
 
         public override int Port { get => ep.Port; }
-        #region Singleton
-        private static BaseClient m_Instance = null;
-        public static BaseClient Instance
-        {
-            get
-            {
-                if (m_Instance == null)
-                {
-                    m_Instance = new ConnectToServer(Settings.Default.FlightServerIP, Settings.Default.FlightCommandPort);
-                }
-                return m_Instance;
-            }
-        }
-        #endregion
 
         public ConnectToServer(string ip, int port)
         {

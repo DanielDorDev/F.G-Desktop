@@ -11,10 +11,28 @@ namespace FlightSimulator.Model
 {
     class ManualModel
     {
+
+        #region Singleton
+        private static ManualModel m_Instance = null;
+        public static ManualModel Instance
+        {
+            get
+            {
+                if (m_Instance == null)
+                {
+                    m_Instance = new ManualModel();
+                }
+                return m_Instance;
+            }
+        }
+        #endregion
+
         private IFlightModel server;
 
-        public ManualModel() => server = FlightGearModel.Instance();
 
+        public ManualModel() {
+            server = FlightGearModel.Instance();
+        }
         private double _rudder;
         public double Rudder
         {
