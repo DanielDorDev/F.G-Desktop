@@ -16,14 +16,16 @@ namespace FlightSimulator.Model
     {
         #region Singleton
         private static Interface.IFlightModel m_Instance = null;
-        public static Interface.IFlightModel Instance()
+        public static Interface.IFlightModel Instance
         {
-
+            get
+            {
                 if (m_Instance == null)
                 {
                     m_Instance = new FlightGearModel(CreateServer.Instance, ConnectToServer.Instance);
                 }
                 return m_Instance;
+            }
         }
         #endregion
 

@@ -11,9 +11,9 @@ namespace FlightSimulator.Model
 {
     class ManualModel
     {
-        private ITelnetClient server;
+        private IFlightModel server;
 
-        public ManualModel() => server = ConnectToServer.Instance;
+        public ManualModel() => server = FlightGearModel.Instance;
 
         private double _rudder;
         public double Rudder
@@ -37,6 +37,6 @@ namespace FlightSimulator.Model
             }
         }
 
-        public void ChangeValue(string path, double new_value) => server.Write("set " + path + " " + new_value.ToString());
+        public void ChangeValue(string path, double new_value) => server.Send("set " + path + " " + new_value.ToString());
     }
 }
