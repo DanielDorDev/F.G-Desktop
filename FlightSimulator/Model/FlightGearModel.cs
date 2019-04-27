@@ -19,24 +19,51 @@ namespace FlightSimulator.Model
         public static Interface.IFlightModel Instance()
         {
 
-                if (m_Instance == null)
-                {
-                    m_Instance = new FlightGearModel(CreateServer.Instance, ConnectToServer.Instance);
-                }
-                return m_Instance;
+            if (m_Instance == null)
+            {
+                m_Instance = new FlightGearModel(CreateServer.Instance, ConnectToServer.Instance);
+            }
+            return m_Instance;
         }
         #endregion
 
-        private ITelnetClient telnetClient;
-        private ITelnetServer telnetServer;
-        volatile Boolean stop;
+        private BaseClient telnetClient;
+        private BaseServer telnetServer;
 
+        volatile Boolean _StopServer;
+        public Boolean StopServer
+        {
+            get
+            {
+                return _StopServer;
+            }
+            set
+            {
 
+                _StopServer = value;
+                ////////////////////////
+                ///}
+            }
+        }
+
+        volatile Boolean _StopClient;
+        public Boolean StopClient
+        {
+            get
+            {
+                return _StopClient;
+            }
+            set
+            {
+                _StopClient = value;
+                ////////////////
+            }
+        }
         private double _Lon;
         public double Lon
         {
             get {
-            return _Lon; 
+                return _Lon;
             }
             set
             {
@@ -64,19 +91,41 @@ namespace FlightSimulator.Model
             }
         }
 
-        public FlightGearModel(ITelnetServer setServer, ITelnetClient setClient)
+
+        public FlightGearModel(BaseServer setServer, BaseClient setClient)
         {
             this.telnetServer = setServer;
+            this.telnetServer.NotifyDataRecv += DataUpdate;
+            this.telnetServer.NotifyDisconnected +=
+                delegate () { this.StopServer = false;};
+            this.telnetServer.NotifyConnected +=
+                delegate () { this.StopServer = true; };
+
             this.telnetServer.Connect();
+
             this.telnetClient = setClient;
+            this.telnetClient.NotifyDisconnected +=
+                delegate () { this.StopServer = false; };
+            this.telnetClient.NotifyConnected +=
+                delegate () { this.StopServer = true; };
             this.telnetClient.Connect();
         }
 
         public void DataUpdate()
         {
-            double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-            Lon = fieldChange[0];
-            Lat = fieldChange[1];
+            try
+            {
+                double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
+                //   file.Wrditse(fieldCshange);
+                Lon = fieldChange[0];
+                Lat = fieldChange[1];
+
+            }
+            catch (NullReferenceException e)
+            {
+
+            }
+
         }
 
 
@@ -84,7 +133,7 @@ namespace FlightSimulator.Model
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
 
-            
+
             if (txtPort != telnetServer.Port)
             {
                 telnetServer.ReConnect(txtPort);
@@ -92,7 +141,6 @@ namespace FlightSimulator.Model
             else if (!telnetServer.IsConnected())
             {
                 telnetServer.Connect();
-
             }
 
             if (txtCommandPort != telnetClient.Port || txtIP != telnetClient.Ip)
@@ -108,13 +156,16 @@ namespace FlightSimulator.Model
 
         public void Disconnect()
         {
-            if(stop == false)
+            if (StopServer == false)
             {
-                stop = true;
-                telnetClient.Disconnect();
+                StopServer = true;
                 telnetServer.Disconnect();
             }
-
+            if (StopClient == false)
+            {
+                StopClient = true;
+                telnetClient.Disconnect();
+            }
         }
 
         public void Send(string msg)
@@ -129,8 +180,6 @@ namespace FlightSimulator.Model
             PropertyChangedEventHandler handler = PropertyChanged;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-
-
     }
 }
 
@@ -161,22 +210,12 @@ public double flight_rudder { get; set; }
 public double flight_flaps { get; set; }
 public double engine_throttle { get; set; }
 public double engine_rpm { get; set; }
-*/
-
-
-
-
-
-
-
-
-/*
-                        FieldInfo[] myFieldInfo = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-                    Array fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                    int i = 0;
-                    foreach (double change in fieldChange)
-                    {
-                        myFieldInfo.SetValue(change, i);
-                        i++;
-                    }
+FieldInfo[] myFieldInfo = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+Array fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
+int i = 0;
+foreach (double change in fieldChange)
+{
+myFieldInfo.SetValue(change, i);
+i++;
+}
 */

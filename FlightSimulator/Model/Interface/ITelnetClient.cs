@@ -8,6 +8,7 @@ namespace FlightSimulator.Model.Interface
 {
     interface ITelnetClient // Interface connect as client
     {
+
         string Ip { get;}
         int Port { get;}
         bool IsConnected();

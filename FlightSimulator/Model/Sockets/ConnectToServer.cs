@@ -1,4 +1,5 @@
-﻿using FlightSimulator.Properties;
+﻿using FlightSimulator.Model.Interface;
+using FlightSimulator.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,17 +12,17 @@ using System.Threading.Tasks;
 
 namespace FlightSimulator.Model.Sockets
 {
-    class ConnectToServer : Interface.ITelnetClient
+    class ConnectToServer : BaseClient 
     {
 
         IPEndPoint ep;
         TcpClient client;
-        public string Ip { get => ep.Address.ToString(); }
+        public override string Ip { get => ep.Address.ToString(); }
 
-        public int Port { get => ep.Port; }
+        public override int Port { get => ep.Port; }
         #region Singleton
-        private static Interface.ITelnetClient m_Instance = null;
-        public static Interface.ITelnetClient Instance
+        private static BaseClient m_Instance = null;
+        public static BaseClient Instance
         {
             get
             {
@@ -40,25 +41,27 @@ namespace FlightSimulator.Model.Sockets
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
         }
 
-        public bool IsConnected()
+        public override bool IsConnected()
         {
             return client.Connected;
         }
 
-        public void Connect()
+        public override void Connect()
         {
             try
             {
                 if (!client.Connected)
                 {
                     client.Connect(ep);
-
+                    this.NotifyClientConnectedEvent();
                         new Thread(delegate () {
                         while (client.Connected)
                         {
                             Thread.Sleep(250);// read every 4HZ seconds.
                         }
-                    }).Start();
+                   this.NotifyClientDisconnectedEvent();
+
+                        }).Start();
                 }
             }
             catch (SocketException e)
@@ -67,22 +70,23 @@ namespace FlightSimulator.Model.Sockets
             }
         }
 
-        public void ReConnect(string ip, int port)
+        public override void ReConnect(string ip, int port)
         {
             Disconnect();
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
             Connect();
         }
 
-        public void Disconnect()
+        public override void Disconnect()
         {
+            this.NotifyClientDisconnectedEvent();
             if (client.Connected)
             {
                 client.Close();
             }
         }
 
-        public void Write(string command)
+        public override void Write(string command)
         {
             try
             {
@@ -91,7 +95,6 @@ namespace FlightSimulator.Model.Sockets
 
                     {
                         byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command);
-
                         client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
                         client.GetStream().Flush();
                     }
@@ -99,7 +102,6 @@ namespace FlightSimulator.Model.Sockets
             }
             catch (SocketException e)
             {
-
             }
         }
     }

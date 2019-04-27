@@ -12,7 +12,7 @@ using FlightSimulator.Properties;
 
 namespace FlightSimulator.Model.Sockets
 {
-    class CreateServer : Interface.ITelnetServer
+    class CreateServer : BaseServer
     {
         IPEndPoint ep;
         TcpListener listener;
@@ -20,17 +20,17 @@ namespace FlightSimulator.Model.Sockets
         volatile bool stop = true;
         public bool Stop { get => stop; set => stop = value; }
 
-        public int Port { get => ep.Port; }
+        public override int Port { get => ep.Port; }
 
-        volatile private string _Data = string.Empty;
+        private string _Data = string.Empty;
         public string Data { get => _Data; set => _Data = value; }
 
         #region Singleton
-        private static Interface.ITelnetServer m_Instance = null;
+        private static BaseServer m_Instance = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static Interface.ITelnetServer Instance
+        public static BaseServer Instance
         {
             get
             {
@@ -49,7 +49,7 @@ namespace FlightSimulator.Model.Sockets
             listener = new TcpListener(ep);
         }
 
-        public void Connect()
+        public override void Connect()
         {
             if (!IsConnected())
             {
@@ -62,11 +62,10 @@ namespace FlightSimulator.Model.Sockets
                 {
                     while (!stop)
                     {
-                        lock (Data)
-                        {
-                            Data = reader.ReadLine();
-                            NotifyPropertyChanged("DataHasChanged");
-                        }
+
+                        Data = reader.ReadLine();
+                        NotifyServerDataRecvEvent();
+
                     }
                     Thread.Sleep(100);// read every 10HZ seconds.
                 }
@@ -75,16 +74,20 @@ namespace FlightSimulator.Model.Sockets
         }
 
 
-        public void ReConnect(int port)
+        public override void ReConnect(int port)
         {
+            NotifyServerDisconnectedEvent();
             Disconnect();
             ep = new IPEndPoint(IPAddress.Any, port);
             Connect();
-
+            NotifyServerConnectedEvent();
         }
-        public void Disconnect()
+
+        public override void Disconnect()
         {
             stop = true;
+            NotifyServerDisconnectedEvent();
+
             if (client != null && client.Connected)
             {
                 client.Close();
@@ -95,7 +98,7 @@ namespace FlightSimulator.Model.Sockets
                 listener.Stop();
             }
         }
-        public bool IsConnected()
+        public override bool IsConnected()
         {
             try
             {
@@ -112,12 +115,9 @@ namespace FlightSimulator.Model.Sockets
             }
         }
 
-        public string Read()
+        public override string Read()
         {
-            lock (Data)
-            {
-                return Data;
-            }
+            return Data;
         }
 
 

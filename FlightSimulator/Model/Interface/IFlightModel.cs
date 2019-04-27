@@ -12,5 +12,8 @@ namespace FlightSimulator.Model.Interface
         void Disconnect();
         void DataUpdate();
         void Send(string msg);
+        double Lat { get; set; } // Will change to SQL database.
+        double Lon { get; set; }
+        
     }
 }

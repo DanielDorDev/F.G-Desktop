@@ -70,6 +70,8 @@
     <Compile Include="Model\ApplicationSettingsModel.cs" />
     <Compile Include="Model\AutoPilotModel.cs" />
     <Compile Include="Model\CommandHandler.cs" />
+    <Compile Include="Model\Sockets\BaseServer.cs" />
+    <Compile Include="Model\Sockets\BaseClient.cs" />
     <Compile Include="Model\Sockets\ConnectToServer.cs" />
     <Compile Include="Model\Sockets\CreateServer.cs" />
     <Compile Include="Model\EventArgs\VirtualJoystickEventArgs.cs" />
