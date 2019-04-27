@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FlightSimulator"
+        xmlns:local="clr-namespace:FlightSimulator" 
         xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
         Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950">
 
     <Grid>
+
+        
+        
         <Views:FlightBoard HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="447" Margin="0,40,0,0"/>
         <Button Content="Connect" Command="{Binding ConnectCommand}" HorizontalAlignment="Left" Margin="162,11,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Content="Settings" Command="{Binding SettingsCommand}" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top" Width="55"/>

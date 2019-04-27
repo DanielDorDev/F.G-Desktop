@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using FlightSimulator.Model.Interface;
 using FlightSimulator.Properties;
 
@@ -17,6 +18,7 @@ namespace FlightSimulator.Model.Sockets
         IPEndPoint ep;
         TcpListener listener;
         TcpClient client;
+        Task serverTask;
         volatile bool stop = true;
         public bool Stop { get => stop; set => stop = value; }
 
@@ -37,27 +39,29 @@ namespace FlightSimulator.Model.Sockets
         {
             if (!IsConnected())
             {
-            stop = false;
-            NotifyServerConnectedEvent();
-            listener.Start();
-            new Thread(delegate () {
-                client = listener.AcceptTcpClient();
-                using (NetworkStream stream = client.GetStream())
-                using (StreamReader reader = new StreamReader(stream))
+                stop = false;
+                NotifyServerConnectedEvent();
+                listener.Start();
+
+                serverTask = new Task(() =>
                 {
-                    while (!stop)
+                    client = listener.AcceptTcpClient();
+                    using (NetworkStream stream = client.GetStream())
+                    using (StreamReader reader = new StreamReader(stream))
                     {
+                        while (!stop)
+                        {
 
-                        Data = reader.ReadLine();
-                        NotifyServerDataRecvEvent();
+                            Data = reader.ReadLine();
+                            NotifyServerDataRecvEvent();
 
+                        }
+                        Thread.Sleep(100);// read every 10HZ seconds.
                     }
-                    Thread.Sleep(100);// read every 10HZ seconds.
-                }
-            }).Start();
+                });
+                serverTask.Start();
             }
         }
-
 
         public override void ReConnect(int port)
         {
@@ -81,6 +85,11 @@ namespace FlightSimulator.Model.Sockets
             if(listener != null)
             {
                 listener.Stop();
+                if(!this.serverTask.IsCanceled)
+                {
+                    this.serverTask.Dispose();
+
+                }
             }
         }
         public override bool IsConnected()

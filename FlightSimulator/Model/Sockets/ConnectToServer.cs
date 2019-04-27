@@ -17,6 +17,7 @@ namespace FlightSimulator.Model.Sockets
 
         IPEndPoint ep;
         TcpClient client;
+        Task ClientTask;
         public override string Ip { get => ep.Address.ToString(); }
 
         public override int Port { get => ep.Port; }
@@ -40,14 +41,21 @@ namespace FlightSimulator.Model.Sockets
                 {
                     client.Connect(ep);
                     this.NotifyClientConnectedEvent();
-                        new Thread(delegate () {
+
+
+                    ClientTask = new Task(() =>
+                    {
                         while (client.Connected)
                         {
+
                             Thread.Sleep(250);// read every 4HZ seconds.
                         }
-                   this.NotifyClientDisconnectedEvent();
+                        this.NotifyClientDisconnectedEvent();
 
-                        }).Start();
+                    });
+
+
+                    ClientTask.Start();
                 }
             }
             catch (SocketException e)
@@ -69,6 +77,10 @@ namespace FlightSimulator.Model.Sockets
             if (client.Connected)
             {
                 client.Close();
+                if(!this.ClientTask.IsCanceled)
+                {
+                    this.ClientTask.Dispose();
+                }
             }
         }
 
