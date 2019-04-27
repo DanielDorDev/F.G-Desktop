@@ -30,7 +30,7 @@
                              Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16"  Margin="384,22,40,437.5"/>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="← aileron →" FontSize="16" FontWeight="Black" Margin="183,20,178,6.5"/>
 
-                    <Slider x:Name="throttleSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
+                    <Slider x:Name="throttleSld" Minimum="0" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
                     Value="{Binding VM_Throttle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="260" RenderTransformOrigin="0.5,0.5" 
                             Margin="-90,232,294,227.5" IsDirectionReversed="True" SmallChange="0.1" LargeChange="0.1">
                         <Slider.RenderTransform>

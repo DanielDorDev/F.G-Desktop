@@ -42,7 +42,7 @@ namespace FlightSimulator.Model
             {
                 for (int i = 0; i < commands.Length; i++)
                 {
-                    this.server.Write(commands[i]+"\r\n");
+                    this.server.Write(commands[i]);
                     Thread.Sleep(200);
                 }
             }).Start();
