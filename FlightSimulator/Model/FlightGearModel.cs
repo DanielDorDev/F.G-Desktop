@@ -40,8 +40,11 @@ namespace FlightSimulator.Model
             }
             set
             {
-                _Lon = value;
-                NotifyPropertyChanged("longitude_deg");
+                if (_Lon != value)
+                {
+                    _Lon = value;
+                    NotifyPropertyChanged("Lon");
+                }
             }
         }
         private double _Lat;
@@ -53,8 +56,12 @@ namespace FlightSimulator.Model
             }
             set
             {
-                _Lat = value;
-                NotifyPropertyChanged("latitude_deg");
+                if (_Lat != value)
+                {
+                    _Lat = value;
+                    NotifyPropertyChanged("Lat");
+                }
+
             }
         }
 
@@ -65,6 +72,14 @@ namespace FlightSimulator.Model
             this.telnetClient = setClient;
             this.telnetClient.Connect();
         }
+
+        public double GetData(string name)
+        {
+
+           
+            throw new NotImplementedException();
+        }
+
 
 
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
@@ -113,9 +128,10 @@ namespace FlightSimulator.Model
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+
     }
 }
 

@@ -16,14 +16,7 @@ namespace FlightSimulator.ViewModels
 {
     class MainWindowViewModel : BaseNotify
     {
-        /*
-Properties.Settings.Default.FlightCommandPort;
-Properties.Settings.Default.FlightServerIP;
-Properties.Settings.Default.FlightInfoPort;
-*/
         private IFlightModel model;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
@@ -35,16 +28,6 @@ Properties.Settings.Default.FlightInfoPort;
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
         }
-        public void NotifyPropertyChanged(string propName)
-        {
-
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
-
-
-        }
-        
-
 
         #region Commands
         #region ConnectCommand

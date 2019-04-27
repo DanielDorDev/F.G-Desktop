@@ -16,7 +16,6 @@ namespace FlightSimulator.Model.Sockets
 
         IPEndPoint ep;
         TcpClient client;
-
         public string Ip { get => ep.Address.ToString(); }
 
         public int Port { get => ep.Port; }
@@ -52,8 +51,14 @@ namespace FlightSimulator.Model.Sockets
             {
                 if (!client.Connected)
                 {
-                    client = new TcpClient();
                     client.Connect(ep);
+
+                        new Thread(delegate () {
+                        while (client.Connected)
+                        {
+                            Thread.Sleep(250);// read every 4HZ seconds.
+                        }
+                    }).Start();
                 }
             }
             catch (SocketException e)
@@ -83,11 +88,12 @@ namespace FlightSimulator.Model.Sockets
             {
                 if (client.Connected)
                 {
-                    using (NetworkStream stream = client.GetStream())
-                    using (StreamWriter writer = new StreamWriter(stream))
+
                     {
-                        writer.WriteLine(command);
-                        writer.Flush();
+                        byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command);
+
+                        client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
+                        client.GetStream().Flush();
                     }
                 }
             }
