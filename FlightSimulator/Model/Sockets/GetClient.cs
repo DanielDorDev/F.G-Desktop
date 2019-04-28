@@ -17,16 +17,23 @@ namespace FlightSimulator.Model.Sockets
     {
         IPEndPoint ep;
         TcpListener listener;
-        TcpClient client;
-        volatile bool stop = true;
+        private volatile bool stop = true;
         public bool Stop { get => stop; set => stop = value; }
 
         public override int Port { get => ep.Port; }
 
         private string _Data = string.Empty;
-        public string Data { get => _Data; set => _Data = value; }
+        public string Data
+        {
+            get => _Data;
+            set
+            {
+                _Data = value;
+                NotifyServerDataRecvEvent();
+            }
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
         public GetClient(int port)
         {
@@ -36,39 +43,56 @@ namespace FlightSimulator.Model.Sockets
 
         public override void Connect()
         {
-            if (client == null || !client.Client.Connected)
+            new Task(() =>
             {
-                stop = false;
-                new Task(() =>
+                try
                 {
-                    try
+                    Stop = false;
+                    NotifyServerConnectedEvent();
+                    listener.Start(1);
+                    while (!Stop)
                     {
-                        listener.Start();
-                        NotifyServerConnectedEvent();
-
-                        client = listener.AcceptTcpClient();
-                        using (NetworkStream stream = client.GetStream())
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            while (!stop)
-                            {
-                                Data = reader.ReadLine();
-                                NotifyServerDataRecvEvent();
-                            }
-                            Thread.Sleep(100);// read every 10HZ seconds.
-                        }
+                        TcpClient client = listener.AcceptTcpClient();
+                        new Task(() => HandleClient(client)).Start();
+                        Thread.Sleep(1000);// read every 10HZ seconds.
                     }
-                    catch (Exception e)
+                }
+                catch (Exception e)
+                {
+                    Disconnect();
+                }
+                finally
+                {
+                    NotifyServerDisconnectedEvent();
+                }
+            }).Start();
+        }
+    
+        private void HandleClient(TcpClient client)
+        {
+            TcpClient clientHandle = client;
+            try
+            {
+                using (NetworkStream stream = clientHandle.GetStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    while (!Stop)
                     {
-                        NotifyServerDisconnectedEvent();
+                        Data = reader.ReadLine();
                     }
-                    finally
-                    {
-                        Disconnect();
-                    }
-                }).Start();
+                    Thread.Sleep(90); // Sleep little less then the client (beacause of the overload time).
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                clientHandle.Client.Close();
+                clientHandle.Close();
             }
         }
+
 
         public override void ReConnect(int port)
         {
@@ -79,17 +103,8 @@ namespace FlightSimulator.Model.Sockets
 
         public override void Disconnect()
         {
-            stop = true;
+            Stop = true;
             NotifyServerDisconnectedEvent();
-            try
-            {
-                if (client != null && client.Connected)
-                {
-                    client.GetStream().Close();
-                    client.Close();
-                }
-            }
-            catch (Exception e) { };
 
             try
             {

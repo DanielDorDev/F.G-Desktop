@@ -26,37 +26,32 @@ namespace FlightSimulator.Model.Sockets
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
         }
 
-
+    
         public override void Connect()
         {
-            if (client == null)
+            new Task(() =>
             {
-                new Task(() =>
+                client = new TcpClient();
+                try
                 {
-                    client = new TcpClient();
-                    try
-                    {
-                        client.Connect(ep);
-                        this.NotifyClientConnectedEvent();
+                    client.Connect(ep);
+                    this.NotifyClientConnectedEvent();
 
-                        while (true)
-                        {
-                            if (!client.Client.Connected)
-                            {
-                                Disconnect();
-                                break;
-                            }
-                        }
-                    }
-                    catch (Exception e)
+                while (client != null)
                     {
-                        Disconnect();
-                        NotifyClientDisconnectedEvent();
+                        Thread.Sleep(100);// read every 10HZ seconds.
                     }
-                }).Start();
+                }
+                catch (Exception e)
+                {
+                    Disconnect();
+                    NotifyClientDisconnectedEvent();
+                }
+            }).Start();
 
-            }
         }
+
+
 
         public override void ReConnect(string ip, int port)
         {
@@ -84,12 +79,10 @@ namespace FlightSimulator.Model.Sockets
             {
                 byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command+ "\r\n");
                 client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
-                client.GetStream().Flush();
             }
             catch (Exception e)
             {
                 NotifyClientDisconnectedEvent();
-                ReConnect(this.Ip, this.Port);
             }
         }
     }

@@ -31,6 +31,7 @@ namespace FlightSimulator.Model
 
         private BaseClient telnetClient;
         private BaseServer telnetServer;
+        const int generic_Count = 25;
 
         volatile Boolean _StopServer;
         public Boolean StopServer
@@ -95,26 +96,49 @@ namespace FlightSimulator.Model
 
         public FlightGearModel(BaseServer setServer, BaseClient setClient)
         {
-            this.telnetServer = setServer;
-            this.telnetServer.NotifyDataRecv += DataUpdate;
-            this.telnetServer.NotifyDisconnected += delegate () { this.StopServer = true;};
-            this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
+            try
+            {
+                this.telnetServer = setServer;
+                this.telnetServer.NotifyDataRecv += DataUpdate;
+                this.telnetServer.NotifyDisconnected += delegate () { this.StopServer = true; };
+                this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
+                telnetServer.Connect();
+            }
+            catch (Exception e)
+            {
+                this.StopServer = true;
 
-            this.telnetServer.Connect();
-
-            this.telnetClient = setClient;
-            this.telnetClient.NotifyDisconnected += delegate () { this.StopClient = true; };
-            this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
-            this.telnetClient.Connect();
+            }
+            try
+            {
+                this.telnetClient = setClient;
+                this.telnetClient.NotifyDisconnected += delegate () { this.StopClient = true; };
+                this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
+                this.telnetClient.Connect();
+            }
+            catch (Exception e)
+            {
+                this.StopClient = true;
+            }
         }
 
         public void DataUpdate()
         {
             try
             {
-                double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                Lon = fieldChange[0];
-                Lat = fieldChange[1];
+                string data = telnetServer.Read();
+                string[] result = data.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                
+                foreach (string dataSplit in result)
+                {
+                    double[] fieldChange = Array.ConvertAll(dataSplit.Split(','), Double.Parse);
+                    if (fieldChange.Length == generic_Count)
+                    {
+                        Lon = fieldChange[0];
+                        Lat = fieldChange[1];
+                    }
+
+                }
             }
             catch (NullReferenceException e) { };
         }
@@ -129,7 +153,7 @@ namespace FlightSimulator.Model
                 }
                 else if (this.StopServer)
                 {
-                    telnetServer.Connect();
+                    new Task(() => telnetServer.Connect()).Start();
                 }
             }
             catch (Exception e) { };
