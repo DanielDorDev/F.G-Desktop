@@ -13,8 +13,6 @@ namespace FlightSimulator.Model
 {
     class AutoPilotModel
     {
-
-
         #region Singleton
         private static AutoPilotModel m_Instance = null;
         public static AutoPilotModel Instance
@@ -32,20 +30,13 @@ namespace FlightSimulator.Model
 
         private IFlightModel server;
 
-        public AutoPilotModel()
-        {
-
-            server = FlightGearModel.Instance();
-        }
+        public AutoPilotModel() => server = FlightGearModel.Instance();
 
         private bool _change_Background;
         public bool Change_Background
         {
-            set
-            {
-                this._change_Background = value;
-            }
-            get { return this._change_Background; }
+            set => this._change_Background = value;
+            get => this._change_Background;
         }
 
         public void SendCommands(string commands_txt)
@@ -58,8 +49,8 @@ namespace FlightSimulator.Model
             {
                 for (int i = 0; i < commands.Length; i++)
                 {
-                    this.server.Send(commands[i]);
-                    Thread.Sleep(200);
+                    this.server.Send(commands[i]+"\r\n");
+                    Thread.Sleep(2000);
                 }
             }).Start();
         }
