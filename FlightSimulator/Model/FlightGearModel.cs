@@ -12,15 +12,25 @@ using FlightSimulator.Model.Sockets;
 
 namespace FlightSimulator.Model
 {
+    /// <summary>
+    /// Flight gear main model.
+    /// Interface based object, using interface for flight model.
+    /// server and client interface usage.
+    /// Data recv with no bind to what porp.
+    /// A base structure for notify server and clients status.
+    /// Notify connection, disconnection by type.
+    /// Elements are not solid, but simple way would be include SQL database for update and getting data.
+    /// Because only one type of flightgear instructed, i used a more dierct and bind info.
+    /// </summary>
     class FlightGearModel : IFlightModel
     {
-        #region Singleton
-        private static Interface.IFlightModel m_Instance = null;
+        #region Singleton 
+        private static Interface.IFlightModel m_Instance = null;   // Only one instance for Flight gear model handle.
         public static Interface.IFlightModel Instance()
         {
 
             if (m_Instance == null)
-            {
+            {   // Create by confg file in project.
                 m_Instance = new FlightGearModel(new GetClient(Properties.Settings.Default.FlightInfoPort),
                     new ConnectToServer(Properties.Settings.Default.FlightServerIP, Properties.Settings.Default.FlightCommandPort));
             }
@@ -29,11 +39,11 @@ namespace FlightSimulator.Model
         }
         #endregion
 
-        private BaseClient telnetClient;
-        private BaseServer telnetServer;
-        const int generic_Count = 25;
+        private BaseClient telnetClient;    // Client interface object.
+        private BaseServer telnetServer;    // Server interface object.
+        const int generic_Count = 25;       // XML data for server.
 
-        volatile Boolean _StopServer;
+        volatile Boolean _StopServer;       // Boolean for server status.
         public Boolean StopServer
         {
             get
@@ -42,14 +52,11 @@ namespace FlightSimulator.Model
             }
             set
             {
-
                 _StopServer = value;
-                ////////////////////////
-                ///}
             }
         }
 
-        volatile Boolean _StopClient;
+        volatile Boolean _StopClient;   // Boolean for client status.
         public Boolean StopClient
         {
             get
@@ -59,10 +66,12 @@ namespace FlightSimulator.Model
             set
             {
                 _StopClient = value;
-                ////////////////
             }
         }
-        private double _Lon;
+        // There are only two paramters, not need for complex databases(for this ex).
+        #region Data Server 
+
+        private double _Lon;    
         public double Lon
         {
             get {
@@ -89,63 +98,68 @@ namespace FlightSimulator.Model
                 if (_Lat != value)
                 {
                     _Lat = value;
-                    NotifyPropertyChanged("Lat");
                 }
             }
         }
+        #endregion
 
-        public FlightGearModel(BaseServer setServer, BaseClient setClient)
+        public FlightGearModel(BaseServer setServer, BaseClient setClient) // Construct.
         {
             try
             {
+                // Set server, register observers and connect.
                 this.telnetServer = setServer;
                 this.telnetServer.NotifyDataRecv += DataUpdate;
                 this.telnetServer.NotifyDisconnected += delegate () { this.StopServer = true; };
                 this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
                 telnetServer.Connect();
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // If someting happened.
                 this.StopServer = true;
-
             }
             try
             {
+                // Set client, register observers and connect.
                 this.telnetClient = setClient;
                 this.telnetClient.NotifyDisconnected += delegate () { this.StopClient = true; };
                 this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
                 this.telnetClient.Connect();
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // If someting happened.
                 this.StopClient = true;
             }
         }
 
-        public void DataUpdate()
+        public void DataUpdate()    // Opeartion when data updated and object got notify.
         {
             try
             {
-                string data = telnetServer.Read();
-                string[] result = data.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                
-                foreach (string dataSplit in result)
-                {
-                    double[] fieldChange = Array.ConvertAll(dataSplit.Split(','), Double.Parse);
-                    if (fieldChange.Length == generic_Count)
-                    {
-                        Lon = fieldChange[0];
-                        Lat = fieldChange[1];
-                    }
+                // Read the data from server, split by ending line.
+                //string[] result = data.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
+                // For each of the data(
+                //    foreach (string dataSplit in result)
+                //  {
+                double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
+                //if (fieldChange.Length == generic_Count)
+                if (fieldChange[0] != Lon | fieldChange[1] != Lat)
+                {
+                    Lon = fieldChange[0];
+                    Lat = fieldChange[1];
+                    NotifyPropertyChanged("Lat");
                 }
             }
-            catch (NullReferenceException e) { };
+            catch (NullReferenceException) { };
         }
 
+        // Connect to both server and client (as asked).
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
-            try
+            try // Check if reconnect needed, if not check if server stoped, and new connection needed.
             {
                 if (txtPort != telnetServer.Port)
                 {
@@ -156,10 +170,10 @@ namespace FlightSimulator.Model
                     new Task(() => telnetServer.Connect()).Start();
                 }
             }
-            catch (Exception e) { };
+            catch (Exception) { };
 
             try
-            {
+            {   // Check if reconnect needed, if not check if client stoped, and new connection needed.
                 if (txtCommandPort != telnetClient.Port || txtIP != telnetClient.Ip)
                 {
                     telnetClient.ReConnect(txtIP, txtCommandPort);
@@ -168,10 +182,10 @@ namespace FlightSimulator.Model
                 {
                     telnetClient.Connect();
                 }
-            } catch (Exception e) { };
+            } catch (Exception) { };
         }
 
-        public void Disconnect()
+        public void Disconnect()    // Disconnect both from server and client(set status of servers and operate).
         {
             StopServer = true;
             telnetServer.Disconnect();
@@ -179,7 +193,7 @@ namespace FlightSimulator.Model
             telnetClient.Disconnect();
         }
 
-        public void Send(string msg)
+        public void Send(string msg)    // Send data by client connection.
         {
             telnetClient.Write(msg);
         }
@@ -192,46 +206,6 @@ namespace FlightSimulator.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public bool IsConnected()
-        {
-            return !this.StopClient;
-        }
+        // Check for server connection (ba
     }
 }
-
-
-/*
-public double longitude_deg { get; set; }
-public double latitude_deg { get; set; }
-public double airspeed_indicator_indicated_speed_ktg { get; set; }
-public double altimeter_indicated_altitude_ft { get; set; }
-public double altimeter_pressure_alt_ft { get; set; }
-public double attitude_indicator_indicated_pitch_deg { get; set; }
-public double attitude_indicator_indicated_roll_deg { get; set; }
-public double attitude_indicator_internal_pitch_deg { get; set; }
-public double attitude_indicator_internal_roll_deg { get; set; }
-public double encoder_indicated_altitude_ft { get; set; }
-public double encoder_pressure_alt_ft { get; set; }
-public double gps_indicated_altitude_ft { get; set; }
-public double gps_indicated_ground_speed_kt { get; set; }
-public double gps_indicated_vertical_speed { get; set; }
-public double indicated_heading_deg { get; set; }
-public double magnetic_compass_indicated_heading_deg { get; set; }
-public double slip_skid_ball_indicated_slip_skid { get; set; }
-public double turn_indicator_indicated_turn_rate { get; set; }
-public double vertical_speed_indicator_indicated_speed_fpm { get; set; }
-public double flight_aileron { get; set; }
-public double flight_elevator { get; set; }
-public double flight_rudder { get; set; }
-public double flight_flaps { get; set; }
-public double engine_throttle { get; set; }
-public double engine_rpm { get; set; }
-FieldInfo[] myFieldInfo = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-Array fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-int i = 0;
-foreach (double change in fieldChange)
-{
-myFieldInfo.SetValue(change, i);
-i++;
-}
-*/

@@ -22,14 +22,15 @@ namespace FlightSimulator.Views
 {
     public partial class FlightBoard : UserControl
     {
+        // Point collection data.
         ObservableDataSource<Point> planeLocations = null;
         FlightBoardViewModel vm;
 
         public FlightBoard()
         {
+            // Create Board VM, add observer to vm of flight board. 
             vm = new FlightBoardViewModel();
             InitializeComponent();
-            this.DataContext = vm;
             this.vm.PropertyChanged += Vm_PropertyChanged;
         }
 
@@ -38,16 +39,16 @@ namespace FlightSimulator.Views
             planeLocations = new ObservableDataSource<Point>();
             // Set identity mapping of point in collection to point on plot
             planeLocations.SetXYMapping(p => p);
-
             plotter.AddLineGraph(planeLocations, 2, "Route");
         }
 
         private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // In event check if property changes fit, is so add plane location.
             if(e.PropertyName.Equals("VM_Lat") || e.PropertyName.Equals("VM_Lon"))
             {
-                Point p1 = new Point(vm.Lat , vm.Lon);
-                planeLocations.AppendAsync(Dispatcher, p1);
+                // Add point to collection.
+                planeLocations.AppendAsync(Dispatcher, new Point(vm.Lat, vm.Lon));
             }
         }
 

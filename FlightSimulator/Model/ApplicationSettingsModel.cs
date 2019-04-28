@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FlightSimulator.Model
 {
-    public class ApplicationSettingsModel : ISettingsModel
+    public class ApplicationSettingsModel : ISettingsModel  // Settings app model.
     {
         #region Singleton
-        private static ISettingsModel m_Instance = null;
+        private static ISettingsModel m_Instance = null;    // Create single instance of settings.
         public static ISettingsModel Instance
         {
             get
@@ -23,29 +23,29 @@ namespace FlightSimulator.Model
             }
         }
         #endregion
-        public string FlightServerIP
+        public string FlightServerIP        // Get ip from Confg file.
         {
             get { return Properties.Settings.Default.FlightServerIP; }
             set { Properties.Settings.Default.FlightServerIP = value; }
         }
-        public int FlightCommandPort
+        public int FlightCommandPort // Get port for command opeartion from Confg file.
         {
             get { return Properties.Settings.Default.FlightCommandPort; }
             set { Properties.Settings.Default.FlightCommandPort = value; }
         }
 
-        public int FlightInfoPort
+        public int FlightInfoPort // Get port for info server from Confg file.
         {
             get { return Properties.Settings.Default.FlightInfoPort; }
             set { Properties.Settings.Default.FlightInfoPort = value; }
         }
 
-        public void SaveSettings()
+        public void SaveSettings()  // Save settings in confg file.
         {
             Properties.Settings.Default.Save();
         }
 
-        public void ReloadSettings()
+        public void ReloadSettings() // Reload data.
         {
             Properties.Settings.Default.Reload();
         }

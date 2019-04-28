@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlightSimulator.ViewModels
 {
-    public abstract class BaseNotify : INotifyPropertyChanged
+    public abstract class BaseNotify : INotifyPropertyChanged   // Base abstract class for notify opeartions.
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

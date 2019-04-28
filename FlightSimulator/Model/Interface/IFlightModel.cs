@@ -8,12 +8,11 @@ namespace FlightSimulator.Model.Interface
 {
     interface IFlightModel : System.ComponentModel.INotifyPropertyChanged
     {
-        void Connect(string ip, int port, int portCom);
-        void Disconnect();
-        void DataUpdate();
-        bool IsConnected();
-        void Send(string msg);
-        double Lat { get; set; } // Will change to SQL database.
+        void Connect(string ip, int port, int portCom);         // Connect interface for flight gear.
+        void Disconnect();        // Disconnect server for flight gear.
+        void DataUpdate();        // Opeartion when data updated.
+        void Send(string msg);        // Send data to flight gear.
+        double Lat { get; set; } // Will change to SQL database, if more binding needed.
         double Lon { get; set; }
         
     }

@@ -29,19 +29,6 @@ namespace FlightSimulator.ViewModels
             };
         }
 
-        private string _ConnectStatus = "Connect";
-        public string ConnectStatus
-        {
-            get
-            {
-                return _ConnectStatus;
-            }
-
-            set
-            {
-                _ConnectStatus = value;
-            }
-        }
         #region Commands
         #region ConnectCommand
         private ICommand _connectCommand;
