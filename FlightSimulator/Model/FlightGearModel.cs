@@ -34,7 +34,7 @@ namespace FlightSimulator.Model
                 m_Instance = new FlightGearModel(new GetClient(Properties.Settings.Default.FlightInfoPort),
                     new ConnectToServer(Properties.Settings.Default.FlightServerIP, Properties.Settings.Default.FlightCommandPort));
             }
-            
+
             return m_Instance;
         }
         #endregion
@@ -71,10 +71,11 @@ namespace FlightSimulator.Model
         // There are only two paramters, not need for complex databases(for this ex).
         #region Data Server 
 
-        private double _Lon;    
+        private double _Lon;
         public double Lon
         {
-            get {
+            get
+            {
                 return _Lon;
             }
             set
@@ -182,7 +183,8 @@ namespace FlightSimulator.Model
                 {
                     telnetClient.Connect();
                 }
-            } catch (Exception) { };
+            }
+            catch (Exception) { };
         }
 
         public void Disconnect()    // Disconnect both from server and client(set status of servers and operate).
@@ -205,7 +207,5 @@ namespace FlightSimulator.Model
             PropertyChangedEventHandler handler = PropertyChanged;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-
-        // Check for server connection (ba
     }
 }

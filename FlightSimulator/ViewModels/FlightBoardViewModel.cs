@@ -11,22 +11,23 @@ namespace FlightSimulator.ViewModels
 {
     public class FlightBoardViewModel : BaseNotify
     {
-        IFlightModel model;
+        IFlightModel model; // Contain instance of model FG.
         public FlightBoardViewModel()
         {
             this.model = FlightGearModel.Instance();
 
+            // Register as listener to notify property changes.
             this.model.PropertyChanged +=          
                 delegate (Object sender, PropertyChangedEventArgs e) {
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
 
-        }
+        }   // Flight board parameters.
         public double Lon
         {
             get => model.Lon;
         }
-
+        // Flight board parameters.
         public double Lat
         {
             get => model.Lat;

@@ -36,6 +36,7 @@ namespace FlightSimulator.ViewModels
         {
             get
             {
+                // Connection handler, get on click command and use it.
                 return _connectCommand ?? (_connectCommand =
                 new CommandHandler(() => OnClick()));
             }
@@ -43,6 +44,7 @@ namespace FlightSimulator.ViewModels
 
         private void OnClick()
         {
+            // Send connect command to model.
             model.Connect(Settings.Default.FlightServerIP, Settings.Default.FlightInfoPort, Settings.Default.FlightCommandPort);
         }
         #endregion
@@ -53,37 +55,20 @@ namespace FlightSimulator.ViewModels
         {
             get
             {
+                // Create settings command and use it.
                 return _settingsCommand ?? (_settingsCommand =
                 new CommandHandler(() => SettingsClick()));
             }
         }
         private void SettingsClick()
         {
-
+            // Open settings window for the user.
             SettingsWindowViewModel VM_settings = new SettingsWindowViewModel(new ApplicationSettingsModel());
             Views.Windows.SettingsWindow objSettings = new Views.Windows.SettingsWindow();
             objSettings.ShowDialog();
         }
 
         #endregion
-
-        /*
-        #region ClosedCommand
-        private ICommand _closeCommand;
-        public ICommand CloseCommand
-        {
-            get
-            {
-
-                return _closeCommand ?? (_closeCommand =
-                new CommandHandler(() => CloseClick()));
-            }
-        }
-        private void CloseClick()
-        {
-            model.Disconnect();
-        } 
-        #endregion*/
         #endregion
 
     }
