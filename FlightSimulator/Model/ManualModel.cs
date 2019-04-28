@@ -11,7 +11,6 @@ namespace FlightSimulator.Model
 {
     class ManualModel
     {
-
         #region Singleton
         private static ManualModel m_Instance = null;
         public static ManualModel Instance
@@ -29,9 +28,10 @@ namespace FlightSimulator.Model
 
         private IFlightModel server;
 
-        public ManualModel() {
-            server = FlightGearModel.Instance();
-        }
+        // Constructor
+        public ManualModel() => server = FlightGearModel.Instance();
+
+        // The Rudder property which is incharge of updating the server on any change with the Rudder's value.
         private double _rudder;
         public double Rudder
         {
@@ -43,6 +43,7 @@ namespace FlightSimulator.Model
             }
         }
 
+        // The Throttle property which is incharge of updating the server on any change with the Throttle's value.
         private double _throttle;
         public double Throttle
         {
@@ -54,6 +55,7 @@ namespace FlightSimulator.Model
             }
         }
 
+        // The method in which we write the new value to the server.
         public void ChangeValue(string path, double new_value) => server.Send("set " + path + " " + new_value.ToString());
     }
 }

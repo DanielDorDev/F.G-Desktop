@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Height="480" Width="470">
 
-    <Grid >
+        <Grid >
         <local:Joystick x:Name="Joystick" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,5"/>
         <Slider x:Name="rudderSld" Minimum="-1" Maximum="1" Interval="1" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True"
                 Value="{Binding VM_Rudder}" Height="20" Width="260" Margin="107,426,103,34" SmallChange="0.1" LargeChange="0.1"/>
@@ -45,7 +45,8 @@
             </TextBlock.RenderTransform>
         </TextBlock>
 
-        <TextBlock Text="← elevator →" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Black" RenderTransformOrigin="0.485,-9.283" Margin="0,231,-18,228">
+        <TextBlock Text="← elevator →" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="Black" RenderTransformOrigin="0.485,-9.283"
+                   Margin="0,231,-18,228">
             <TextBlock.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -56,7 +57,7 @@
             </TextBlock.RenderTransform>
         </TextBlock>
         <TextBox Text="{Binding ElementName=Joystick, Path=Elevator, StringFormat=N1}" TextAlignment="Center" Width="40" Height="20" 
-                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" RenderTransformOrigin="0.1,0.6" Margin="412,64,12,395.5">
+                 Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" RenderTransformOrigin="0.1,0.6" Margin="412,64,12,395.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -66,5 +67,5 @@
                 </TransformGroup>
             </TextBox.RenderTransform>
         </TextBox>
-    </Grid>
+        </Grid>
 </UserControl>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FlightSimulator" 
         xmlns:Views="clr-namespace:FlightSimulator.Views" x:Class="FlightSimulator.MainWindow"
         mc:Ignorable="d"
-        Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950">
+        Title="Dorin and Daniel's Flight Simulator" Height="550" Width="950" ResizeMode="NoResize">
 
     <Grid>
         <Views:FlightBoard HorizontalAlignment="Left" Height="472" VerticalAlignment="Top" Width="447" Margin="0,40,0,0"/>

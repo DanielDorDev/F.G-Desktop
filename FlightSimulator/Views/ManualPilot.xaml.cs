@@ -27,17 +27,8 @@ namespace FlightSimulator.Views
             InitializeComponent();
             this.vm = new ManualViewModel();
             this.DataContext = vm;
+            // Registering the Joystick_Move method to the Moved event in the Joystick.
             this.Joystick.Moved += this.vm.Joystick_Move;
         }
-
-        /*private void RudderSld_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {
-            this.vm.VM_Rudder = this.rudderSld.Value;
-        }
-
-        private void ThrottleSld_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {
-            this.vm.VM_Throttle = this.throttleSld.Value;
-        }*/
     }
 }
