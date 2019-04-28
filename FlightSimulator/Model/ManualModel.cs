@@ -29,7 +29,6 @@ namespace FlightSimulator.Model
 
         private IFlightModel server;
 
-
         public ManualModel() {
             server = FlightGearModel.Instance();
         }
@@ -55,6 +54,6 @@ namespace FlightSimulator.Model
             }
         }
 
-        public void ChangeValue(string path, double new_value) => server.Send("set " + path + " " + new_value.ToString());
+        public void ChangeValue(string path, double new_value) => server.Send("set " + path + " " + new_value.ToString()+"\r\n");
     }
 }

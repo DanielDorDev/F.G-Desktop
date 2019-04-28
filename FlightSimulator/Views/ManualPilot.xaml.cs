@@ -27,7 +27,17 @@ namespace FlightSimulator.Views
             InitializeComponent();
             this.vm = new ManualViewModel();
             this.DataContext = vm;
-            this.Joystick.LastMoveSample += this.vm.Joystick_Move;
+            this.Joystick.Moved += this.vm.Joystick_Move;
         }
+
+        /*private void RudderSld_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            this.vm.VM_Rudder = this.rudderSld.Value;
+        }
+
+        private void ThrottleSld_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            this.vm.VM_Throttle = this.throttleSld.Value;
+        }*/
     }
 }

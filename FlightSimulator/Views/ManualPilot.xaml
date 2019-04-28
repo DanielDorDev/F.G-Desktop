@@ -32,9 +32,9 @@
             </Slider.RenderTransform>
         </Slider>
         <TextBox Text="{Binding ElementName=throttleSld, Path=Value}" TextAlignment="Center" Width="40" Height="20"
-                             Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="34,68,390,391.5" RenderTransformOrigin="0.412,-0.925" />
+                Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Black" FontSize="16" Margin="34,68,390,391.5" RenderTransformOrigin="0.412,-0.925" />
         <TextBlock Text="← throttle →" FontSize="16" FontWeight="Black" 
-                               RenderTransformOrigin="0.5,0.5" Margin="-25,232,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+               RenderTransformOrigin="0.5,0.5" Margin="-25,232,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBlock.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
