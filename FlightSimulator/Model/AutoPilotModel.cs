@@ -43,13 +43,13 @@ namespace FlightSimulator.Model
         {
             if (string.IsNullOrEmpty(commands_txt))
                 return;
-                  
+
             string[] commands = commands_txt.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             new Thread(delegate ()
             {
                 for (int i = 0; i < commands.Length; i++)
                 {
-                    this.server.Send(commands[i]+"\r\n");
+                    this.server.Send(commands[i]);
                     Thread.Sleep(2000);
                 }
             }).Start();

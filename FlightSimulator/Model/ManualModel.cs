@@ -54,6 +54,6 @@ namespace FlightSimulator.Model
             }
         }
 
-        public void ChangeValue(string path, double new_value) => server.Send("set " + path + " " + new_value.ToString()+"\r\n");
+        public void ChangeValue(string path, double new_value) => server.Send("set " + path + " " + new_value.ToString());
     }
 }

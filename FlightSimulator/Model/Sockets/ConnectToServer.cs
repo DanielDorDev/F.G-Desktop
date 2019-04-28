@@ -82,7 +82,7 @@ namespace FlightSimulator.Model.Sockets
         {
             try
             {
-                byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command);
+                byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command+ "\r\n");
                 client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
                 client.GetStream().Flush();
             }
