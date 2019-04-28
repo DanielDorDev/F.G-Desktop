@@ -13,35 +13,46 @@ using FlightSimulator.Properties;
 
 namespace FlightSimulator.Model.Sockets
 {
-    class GetClient : BaseServer        // Server for accepting clients, baseServer interface.
+    class GetClient : BaseServer    // Server for accepting clients, baseServer interface.
     {
         IPEndPoint ep;
-        TcpListener listener;       // Server listener.
-        private volatile bool stop = true;      // Volatile boolean for connection status.
+
+        // Server listener.
+        TcpListener listener;
+
+        // Volatile boolean for connection status.
+        private volatile bool stop = true;
+
         public bool Stop { get => stop; set => stop = value; }
 
-        public override int Port { get => ep.Port; }    // Get port by ip end point object.
+        // Get port by ip end point object.
+        public override int Port => ep.Port;
 
-        private string _Data = string.Empty;        // Data buffer.
+        // Data buffer.
+        private string _Data = string.Empty;
         public string Data
         {
             get => _Data;
             set
             {
-                _Data = value;      // If data changed, notify data recv.
+                _Data = value;
+                // If data changed, notify data recv.
                 NotifyServerDataRecvEvent();
             }
         }
 
-    public event PropertyChangedEventHandler PropertyChanged;       // If property changed, event observable.
+        // If property changed, event observable.
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public GetClient(int port)      // Create the server data, by port and listner object.
+        // Create the server data, by port and listner object.
+        public GetClient(int port)
         {
             ep = new IPEndPoint(IPAddress.Any, port);
             listener = new TcpListener(ep);
         }
 
-        public override void Connect()      // Connect  to server, open for clients.
+        // Connect  to server, open for clients.
+        public override void Connect()
         {
             new Task(() =>
             {
@@ -65,10 +76,11 @@ namespace FlightSimulator.Model.Sockets
                 }
             }).Start();
         }
-    
-        private void HandleClient(TcpClient client)     // Handle client, given tcp client object.
+
+        // Handle client, given tcp client object.
+        private void HandleClient(TcpClient client)
         {
-            TcpClient clientHandle = client;             // Save it.
+            TcpClient clientHandle = client;    // Save it.
             try
             {
                 // Using the strem from the client, create reader and read lines while server connected.
@@ -87,26 +99,29 @@ namespace FlightSimulator.Model.Sockets
             }
             finally
             {
-                clientHandle.Client.Close();                 // After process finshed , close client.
+                // After process finshed , close client.
+                clientHandle.Client.Close();
                 clientHandle.Close();
             }
         }
 
-        public override void ReConnect(int port)    // Reconnect to server, disconnect first, and then connect again.
+        // Reconnect to server, disconnect first, and then connect again.
+        public override void ReConnect(int port)
         {
             Disconnect();
             ep = new IPEndPoint(IPAddress.Any, port);
             Connect();
         }
 
-        public override void Disconnect()   // Disconnect from server, stop server opeartion, notify it.
+        // Disconnect from server, stop server opeartion, notify it.
+        public override void Disconnect()
         {
             Stop = true;
             NotifyServerDisconnectedEvent();
 
             try // Close listener and clients.
             {
-                    if (listener != null)
+                if (listener != null)
                 {
                     listener.Server.Close();
                     listener.Stop();
@@ -115,10 +130,8 @@ namespace FlightSimulator.Model.Sockets
             catch (Exception) { };
         }
 
-        public override string Read()   // Read data, a socket for the outside interface.
-        {
-            return Data;
-        }
+        // Read data, a socket for the outside interface.
+        public override string Read() => Data;
 
 
         public void NotifyPropertyChanged(string propName)      // Notify property changed.

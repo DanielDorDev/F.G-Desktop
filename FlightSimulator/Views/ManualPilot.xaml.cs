@@ -22,6 +22,7 @@ namespace FlightSimulator.Views
     public partial class ManualPilot : UserControl
     {
         private ManualViewModel vm;
+
         public ManualPilot()
         {
             InitializeComponent();

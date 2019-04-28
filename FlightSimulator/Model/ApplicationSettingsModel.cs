@@ -15,7 +15,7 @@ namespace FlightSimulator.Model
         {
             get
             {
-                if(m_Instance == null)
+                if (m_Instance == null)
                 {
                     m_Instance = new ApplicationSettingsModel();
                 }
@@ -23,29 +23,36 @@ namespace FlightSimulator.Model
             }
         }
         #endregion
-        public string FlightServerIP        // Get ip from Confg file.
+
+        // Get ip from Confg file.
+        public string FlightServerIP
         {
             get { return Properties.Settings.Default.FlightServerIP; }
             set { Properties.Settings.Default.FlightServerIP = value; }
         }
-        public int FlightCommandPort // Get port for command opeartion from Confg file.
+
+        // Get port for command opeartion from Confg file.
+        public int FlightCommandPort
         {
             get { return Properties.Settings.Default.FlightCommandPort; }
             set { Properties.Settings.Default.FlightCommandPort = value; }
         }
 
-        public int FlightInfoPort // Get port for info server from Confg file.
+        // Get port for info server from Confg file.
+        public int FlightInfoPort
         {
             get { return Properties.Settings.Default.FlightInfoPort; }
             set { Properties.Settings.Default.FlightInfoPort = value; }
         }
 
-        public void SaveSettings()  // Save settings in confg file.
+        // Save settings in confg file.
+        public void SaveSettings()
         {
             Properties.Settings.Default.Save();
         }
 
-        public void ReloadSettings() // Reload data.
+        // Reload data.
+        public void ReloadSettings()
         {
             Properties.Settings.Default.Reload();
         }

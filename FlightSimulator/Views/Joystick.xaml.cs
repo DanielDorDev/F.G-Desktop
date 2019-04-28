@@ -24,7 +24,7 @@ namespace FlightSimulator.Views
     {
         /// <summary>Current Aileron</summary>
         public static readonly DependencyProperty AileronProperty =
-            DependencyProperty.Register("Aileron", typeof(double), typeof(Joystick),null);
+            DependencyProperty.Register("Aileron", typeof(double), typeof(Joystick), null);
 
         /// <summary>Current Elevator</summary>
         public static readonly DependencyProperty ElevatorProperty =
@@ -90,14 +90,14 @@ namespace FlightSimulator.Views
         /// <param name="sender">The object that fired the event</param>
         /// <param name="args">Holds new values for Aileron and Elevator</param>
         public delegate void OnScreenJoystickEventHandler(Joystick sender, VirtualJoystickEventArgs args);
-       
+
         /// <summary>Delegate for joystick events that hold no data</summary>
         /// <param name="sender">The object that fired the event</param>
         public delegate void EmptyJoystickEventHandler(Joystick sender);
 
         /// <summary>This event fires whenever the joystick moves</summary>
         public event OnScreenJoystickEventHandler Moved;
-       
+
         /// <summary>This event fires once the joystick is released and its position is reset</summary>
         public event EmptyJoystickEventHandler Released;
 
@@ -145,8 +145,8 @@ namespace FlightSimulator.Views
                 return;
 
             // Normalizing the Aileron and Elevator values.
-            Aileron = deltaPos.X/124;
-            Elevator = -deltaPos.Y/124;
+            Aileron = deltaPos.X / 124;
+            Elevator = -deltaPos.Y / 124;
 
             knobPosition.X = deltaPos.X;
             knobPosition.Y = deltaPos.Y;

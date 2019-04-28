@@ -45,14 +45,11 @@ namespace FlightSimulator.Views
         private void Vm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // In event check if property changes fit, is so add plane location.
-            if(e.PropertyName.Equals("VM_Lat") || e.PropertyName.Equals("VM_Lon"))
+            if (e.PropertyName.Equals("VM_Lat") || e.PropertyName.Equals("VM_Lon"))
             {
                 // Add point to collection.
                 planeLocations.AppendAsync(Dispatcher, new Point(vm.Lat, vm.Lon));
             }
         }
-
     }
-
 }
-

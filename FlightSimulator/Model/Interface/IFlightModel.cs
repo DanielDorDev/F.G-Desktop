@@ -14,6 +14,5 @@ namespace FlightSimulator.Model.Interface
         void Send(string msg);        // Send data to flight gear.
         double Lat { get; set; } // Will change to SQL database, if more binding needed.
         double Lon { get; set; }
-        
     }
 }

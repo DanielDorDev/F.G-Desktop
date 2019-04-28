@@ -14,11 +14,13 @@ namespace FlightSimulator.ViewModels.Windows
     {
         private ISettingsModel model;   // Settings model field.
 
+        // Construct vm.
         public SettingsWindowViewModel(ISettingsModel model)
         {
             this.model = model;
-        }   // Construct vm.
+        }
 
+        // Return ip from model, if changed send notify.
         public string FlightServerIP
         {
             get { return model.FlightServerIP; }
@@ -27,9 +29,10 @@ namespace FlightSimulator.ViewModels.Windows
                 model.FlightServerIP = value;
                 NotifyPropertyChanged("FlightServerIP");
             }
-        }   // Return ip from model, if changed send notify.
+        }
 
-        public int FlightCommandPort    // Return port from model, if changed send notify.
+        // Return port from model, if changed send notify.
+        public int FlightCommandPort
         {
             get { return model.FlightCommandPort; }
             set
@@ -39,7 +42,8 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
 
-        public int FlightInfoPort  // Return port for server from model, if changed send notify
+        // Return port for server from model, if changed send notify
+        public int FlightInfoPort
         {
             get { return model.FlightInfoPort; }
             set
@@ -47,17 +51,13 @@ namespace FlightSimulator.ViewModels.Windows
                 model.FlightInfoPort = value;
                 NotifyPropertyChanged("FlightInfoPort");
             }
-        }  
-
-        public void SaveSettings()      // Send command for save settings to model.
-        {
-            model.SaveSettings();
         }
 
-        public void ReloadSettings()    // Send command for reload settings to model
-        {
-            model.ReloadSettings();
-        }
+        // Send command for save settings to model.
+        public void SaveSettings() => model.SaveSettings();
+
+        // Send command for reload settings to model
+        public void ReloadSettings() => model.ReloadSettings();
 
         #region Commands
         #region ClickCommand       
@@ -85,7 +85,7 @@ namespace FlightSimulator.ViewModels.Windows
             }
         }
         private void OnCancel()
-        {  
+        {
             // Send reload opeartion to model.
             model.ReloadSettings();
         }

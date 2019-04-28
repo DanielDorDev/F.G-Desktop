@@ -12,21 +12,22 @@ using System.Threading.Tasks;
 
 namespace FlightSimulator.Model.Sockets
 {
-    class ConnectToServer : BaseClient 
+    class ConnectToServer : BaseClient
     {
-
         IPEndPoint ep;
         TcpClient client;
-        public override string Ip { get => ep.Address.ToString(); } // Get ip from IP object.
 
-        public override int Port { get => ep.Port; } // Get port from port object.
+        // Get ip from IP object.
+        public override string Ip { get => ep.Address.ToString(); }
 
-        public ConnectToServer(string ip, int port) // Construct client ip end point.
-        {
-            ep = new IPEndPoint(IPAddress.Parse(ip), port);
-        }
+        // Get port from port object.
+        public override int Port { get => ep.Port; }
 
-        public override void Connect() // Connect to client, create task and loop.
+        // Construct client ip end point.
+        public ConnectToServer(string ip, int port) => ep = new IPEndPoint(IPAddress.Parse(ip), port);
+
+        // Connect to client, create task and loop.
+        public override void Connect()
         {
             new Task(() =>
             {
@@ -37,11 +38,14 @@ namespace FlightSimulator.Model.Sockets
                     client.Connect(ep);     // Connect to client.
                     this.NotifyClientConnectedEvent();      // Notify connection.
 
-                while (client != null)      // disconnect set client to null(free socket).
+                    // disconnect set client to null(free socket).
+                    while (client != null)
                     {
-                        Thread.Sleep(100);// read every 10HZ seconds.
+                        // read every 10HZ seconds.
+                        Thread.Sleep(100);
                     }
                 }
+
                 catch (Exception)
                 {
                     Disconnect();   // Disconnect notify and disconnect operation.
@@ -57,10 +61,14 @@ namespace FlightSimulator.Model.Sockets
             Connect();
         }
 
-        public override void Disconnect()       // Disconnect from the client.
+        // Disconnect from the client.
+        public override void Disconnect()
         {
-            NotifyClientDisconnectedEvent();    // Notify disconnection.
-            if (this.client != null)        // Close if client object exist.
+            // Notify disconnection.
+            NotifyClientDisconnectedEvent();
+
+            // Close if client object exist.
+            if (this.client != null)
             {
                 client.Client.Close();      // Close socket and then client.
                 client.Close();
@@ -69,11 +77,14 @@ namespace FlightSimulator.Model.Sockets
             }
 
         }
-        public override void Write(string command)          // Write to client msg.
+
+        // Write to client msg.
+        public override void Write(string command)
         {
             try
             {
-                byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command+ "\r\n");        // Send data to server, first encode it.
+                // Send data to server, first encode it.
+                byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command + "\r\n");
                 client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
             }
             catch (Exception)

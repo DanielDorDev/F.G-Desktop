@@ -10,21 +10,12 @@ namespace FlightSimulator.Model
     public class CommandHandler : ICommand // Command handler object, for command by mvvm structure.
     {
         private Action _action;
-        public CommandHandler(Action action)
-        {
-            _action = action;
-        }
+        public CommandHandler(Action action) => _action = action;
 
-        public bool CanExecute(object parameter)    // Return if executable.
-        {
-            return true;
-        }
+        public bool CanExecute(object parameter) => true;    // Return if executable.
 
         public event EventHandler CanExecuteChanged;
 
-        public void Execute(object parameter)       // Execute the action.
-        {
-            _action();
-        }
+        public void Execute(object parameter) => _action();       // Execute the action.
     }
 }

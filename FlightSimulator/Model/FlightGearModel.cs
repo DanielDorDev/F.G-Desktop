@@ -43,31 +43,20 @@ namespace FlightSimulator.Model
         private BaseServer telnetServer;    // Server interface object.
         const int generic_Count = 25;       // XML data for server.
 
-        volatile Boolean _StopServer;       // Boolean for server status.
+        volatile Boolean _StopServer;      // Boolean for server status.
         public Boolean StopServer
         {
-            get
-            {
-                return _StopServer;
-            }
-            set
-            {
-                _StopServer = value;
-            }
+            get => _StopServer;
+            set => _StopServer = value;
         }
 
         volatile Boolean _StopClient;   // Boolean for client status.
         public Boolean StopClient
         {
-            get
-            {
-                return _StopClient;
-            }
-            set
-            {
-                _StopClient = value;
-            }
+            get => _StopClient;
+            set => _StopClient = value;
         }
+
         // There are only two paramters, not need for complex databases(for this ex).
         #region Data Server 
 
@@ -115,11 +104,13 @@ namespace FlightSimulator.Model
                 this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
                 telnetServer.Connect();
             }
+
             catch (Exception)
             {
                 // If someting happened.
                 this.StopServer = true;
             }
+
             try
             {
                 // Set client, register observers and connect.
@@ -128,6 +119,7 @@ namespace FlightSimulator.Model
                 this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
                 this.telnetClient.Connect();
             }
+
             catch (Exception)
             {
                 // If someting happened.
@@ -135,18 +127,12 @@ namespace FlightSimulator.Model
             }
         }
 
-        public void DataUpdate()    // Opeartion when data updated and object got notify.
+        // Opeartion when data updated and object got notify.
+        public void DataUpdate()
         {
             try
             {
-                // Read the data from server, split by ending line.
-                //string[] result = data.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                // For each of the data(
-                //    foreach (string dataSplit in result)
-                //  {
                 double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                //if (fieldChange.Length == generic_Count)
                 if (fieldChange[0] != Lon | fieldChange[1] != Lat)
                 {
                     Lon = fieldChange[0];
@@ -187,7 +173,8 @@ namespace FlightSimulator.Model
             catch (Exception) { };
         }
 
-        public void Disconnect()    // Disconnect both from server and client(set status of servers and operate).
+        // Disconnect both from server and client(set status of servers and operate).
+        public void Disconnect()
         {
             StopServer = true;
             telnetServer.Disconnect();
@@ -195,10 +182,8 @@ namespace FlightSimulator.Model
             telnetClient.Disconnect();
         }
 
-        public void Send(string msg)    // Send data by client connection.
-        {
-            telnetClient.Write(msg);
-        }
+        // Send data by client connection.
+        public void Send(string msg) => telnetClient.Write(msg);
 
         public event PropertyChangedEventHandler PropertyChanged;
 

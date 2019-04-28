@@ -8,7 +8,6 @@ namespace FlightSimulator.Model.Interface
 {
     interface ITelnetClient // Interface connect as client
     {
-
         string Ip { get;} // Return ip adress.
         int Port { get;} // Return port number.
         void Connect(); // Connect to client.

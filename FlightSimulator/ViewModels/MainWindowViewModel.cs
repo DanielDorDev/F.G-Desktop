@@ -22,7 +22,7 @@ namespace FlightSimulator.ViewModels
         {
             this.model = FlightGearModel.Instance();
 
-            model.PropertyChanged += 
+            model.PropertyChanged +=
             delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged("VM_" + e.PropertyName);
@@ -70,6 +70,5 @@ namespace FlightSimulator.ViewModels
 
         #endregion
         #endregion
-
     }
 }

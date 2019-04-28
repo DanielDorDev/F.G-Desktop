@@ -27,7 +27,7 @@ namespace FlightSimulator.ViewModels
         }
 
         // Method which registered to the Moved event in the Joystick's code behind and gets notifies each time the Joystick moved.
-        public void Joystick_Move (Views.Joystick sender, Model.EventArgs.VirtualJoystickEventArgs eventArgs)
+        public void Joystick_Move(Views.Joystick sender, Model.EventArgs.VirtualJoystickEventArgs eventArgs)
         {
             // Updating the model about the change in the Aileron and Elevator values.
             this.model.ChangeValue(eventArgs.Aileron_Path, eventArgs.Aileron);

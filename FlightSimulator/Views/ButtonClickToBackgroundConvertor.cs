@@ -15,7 +15,7 @@ namespace FlightSimulator.Views
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             // If true : White ; Otherwise : False.
-            var color= (value is bool && (bool)value) ? Colors.White : Color.FromRgb(241, 193, 193);
+            var color = (value is bool && (bool)value) ? Colors.White : Color.FromRgb(241, 193, 193);
             return new SolidColorBrush(color);
         }
 
