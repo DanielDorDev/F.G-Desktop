@@ -21,6 +21,7 @@ namespace FlightSimulator.Views
     public partial class AutoPilot : UserControl
     {
         private ViewModels.AutoPilotViewModel VM_autoPilot;
+
         public AutoPilot()
         {
             InitializeComponent();
