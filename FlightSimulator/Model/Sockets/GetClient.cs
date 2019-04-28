@@ -80,7 +80,7 @@ namespace FlightSimulator.Model.Sockets
                     {
                         Data = reader.ReadLine();
                     }
-                    Thread.Sleep(100);// read every 10HZ seconds.
+                    Thread.Sleep(90); // Sleep little less then the client (beacause of the overload time).
                 }
             }
             catch (Exception e)

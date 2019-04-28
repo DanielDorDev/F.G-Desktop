@@ -31,6 +31,7 @@ namespace FlightSimulator.Model
 
         private BaseClient telnetClient;
         private BaseServer telnetServer;
+        const int generic_Count = 25;
 
         volatile Boolean _StopServer;
         public Boolean StopServer
@@ -125,9 +126,19 @@ namespace FlightSimulator.Model
         {
             try
             {
-                double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                Lon = fieldChange[0];
-                Lat = fieldChange[1];
+                string data = telnetServer.Read();
+                string[] result = data.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                
+                foreach (string dataSplit in result)
+                {
+                    double[] fieldChange = Array.ConvertAll(dataSplit.Split(','), Double.Parse);
+                    if (fieldChange.Length == generic_Count)
+                    {
+                        Lon = fieldChange[0];
+                        Lat = fieldChange[1];
+                    }
+
+                }
             }
             catch (NullReferenceException e) { };
         }
