@@ -73,7 +73,7 @@
     <Compile Include="Model\Sockets\BaseServer.cs" />
     <Compile Include="Model\Sockets\BaseClient.cs" />
     <Compile Include="Model\Sockets\ConnectToServer.cs" />
-    <Compile Include="Model\Sockets\CreateServer.cs" />
+    <Compile Include="Model\Sockets\GetClient.cs" />
     <Compile Include="Model\EventArgs\VirtualJoystickEventArgs.cs" />
     <Compile Include="Model\FlightGearModel.cs" />
     <Compile Include="Model\Interface\IFlightModel.cs" />

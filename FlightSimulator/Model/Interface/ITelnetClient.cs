@@ -11,7 +11,6 @@ namespace FlightSimulator.Model.Interface
 
         string Ip { get;}
         int Port { get;}
-        bool IsConnected();
         void Connect();
         void ReConnect(string ip, int port);
         void Write(string command);

@@ -16,7 +16,6 @@ namespace FlightSimulator.Model.Sockets
         public event ClientEvent NotifyConnected;
         public event ClientEvent NotifyDisconnected;
 
-        public abstract bool IsConnected();
         public abstract void Connect();
         public abstract void ReConnect(string ip, int port);
         public abstract void Write(string command);

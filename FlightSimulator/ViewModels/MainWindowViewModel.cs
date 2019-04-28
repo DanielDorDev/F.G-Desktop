@@ -29,6 +29,19 @@ namespace FlightSimulator.ViewModels
             };
         }
 
+        private string _ConnectStatus = "Connect";
+        public string ConnectStatus
+        {
+            get
+            {
+                return _ConnectStatus;
+            }
+
+            set
+            {
+                _ConnectStatus = value;
+            }
+        }
         #region Commands
         #region ConnectCommand
         private ICommand _connectCommand;
@@ -67,7 +80,7 @@ namespace FlightSimulator.ViewModels
 
         #endregion
 
-
+        /*
         #region ClosedCommand
         private ICommand _closeCommand;
         public ICommand CloseCommand
@@ -82,8 +95,8 @@ namespace FlightSimulator.ViewModels
         private void CloseClick()
         {
             model.Disconnect();
-        }
-        #endregion
+        } 
+        #endregion*/
         #endregion
 
     }

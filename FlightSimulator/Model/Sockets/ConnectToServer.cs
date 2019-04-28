@@ -17,49 +17,43 @@ namespace FlightSimulator.Model.Sockets
 
         IPEndPoint ep;
         TcpClient client;
-        Task ClientTask;
         public override string Ip { get => ep.Address.ToString(); }
 
         public override int Port { get => ep.Port; }
 
         public ConnectToServer(string ip, int port)
         {
-            client = new TcpClient();
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
         }
 
-        public override bool IsConnected()
-        {
-            return client.Connected;
-        }
 
         public override void Connect()
         {
-            try
+            if (client == null)
             {
-                if (!client.Connected)
+                new Task(() =>
                 {
-                    client.Connect(ep);
-                    this.NotifyClientConnectedEvent();
-
-
-                    ClientTask = new Task(() =>
+                    client = new TcpClient();
+                    try
                     {
-                        while (client.Connected)
+                        client.Connect(ep);
+                        this.NotifyClientConnectedEvent();
+
+                        while (true)
                         {
-
-                            Thread.Sleep(250);// read every 4HZ seconds.
+                            if (!client.Client.Connected)
+                            {
+                                Disconnect();
+                                break;
+                            }
                         }
-                        this.NotifyClientDisconnectedEvent();
-
-                    });
-
-
-                    ClientTask.Start();
-                }
-            }
-            catch (SocketException e)
-            {
+                    }
+                    catch (Exception e)
+                    {
+                        Disconnect();
+                        NotifyClientDisconnectedEvent();
+                    }
+                }).Start();
 
             }
         }
@@ -73,33 +67,30 @@ namespace FlightSimulator.Model.Sockets
 
         public override void Disconnect()
         {
-            this.NotifyClientDisconnectedEvent();
-            if (client.Connected)
+            NotifyClientDisconnectedEvent();
+            if (this.client != null)
             {
+                client.Client.Close();
                 client.Close();
-                if(!this.ClientTask.IsCanceled)
-                {
-                    this.ClientTask.Dispose();
-                }
+                this.client = null;
+
             }
+
         }
 
         public override void Write(string command)
         {
             try
             {
-                if (client.Connected)
-                {
 
-                    {
-                        byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command);
-                        client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
-                        client.GetStream().Flush();
-                    }
-                }
+                byte[] myWriteBuffer = Encoding.ASCII.GetBytes(command);
+                client.GetStream().Write(myWriteBuffer, 0, myWriteBuffer.Length);
+                client.GetStream().Flush();
             }
-            catch (SocketException e)
+            catch (Exception e)
             {
+                NotifyClientDisconnectedEvent();
+                ReConnect(this.Ip, this.Port);
             }
         }
     }

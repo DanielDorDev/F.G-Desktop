@@ -13,12 +13,11 @@ using FlightSimulator.Properties;
 
 namespace FlightSimulator.Model.Sockets
 {
-    class CreateServer : BaseServer
+    class GetClient : BaseServer
     {
         IPEndPoint ep;
         TcpListener listener;
         TcpClient client;
-        Task serverTask;
         volatile bool stop = true;
         public bool Stop { get => stop; set => stop = value; }
 
@@ -29,7 +28,7 @@ namespace FlightSimulator.Model.Sockets
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CreateServer(int port)
+        public GetClient(int port)
         {
             ep = new IPEndPoint(IPAddress.Any, port);
             listener = new TcpListener(ep);
@@ -37,76 +36,70 @@ namespace FlightSimulator.Model.Sockets
 
         public override void Connect()
         {
-            if (!IsConnected())
+            if (client == null || !client.Client.Connected)
             {
                 stop = false;
-                NotifyServerConnectedEvent();
-                listener.Start();
-
-                serverTask = new Task(() =>
+                new Task(() =>
                 {
-                    client = listener.AcceptTcpClient();
-                    using (NetworkStream stream = client.GetStream())
-                    using (StreamReader reader = new StreamReader(stream))
+                    try
                     {
-                        while (!stop)
+                        listener.Start();
+                        NotifyServerConnectedEvent();
+
+                        client = listener.AcceptTcpClient();
+                        using (NetworkStream stream = client.GetStream())
+                        using (StreamReader reader = new StreamReader(stream))
                         {
-
-                            Data = reader.ReadLine();
-                            NotifyServerDataRecvEvent();
-
+                            while (!stop)
+                            {
+                                Data = reader.ReadLine();
+                                NotifyServerDataRecvEvent();
+                            }
+                            Thread.Sleep(100);// read every 10HZ seconds.
                         }
-                        Thread.Sleep(100);// read every 10HZ seconds.
                     }
-                });
-                serverTask.Start();
+                    catch (Exception e)
+                    {
+                        NotifyServerDisconnectedEvent();
+                    }
+                    finally
+                    {
+                        Disconnect();
+                    }
+                }).Start();
             }
         }
 
         public override void ReConnect(int port)
         {
-            NotifyServerDisconnectedEvent();
             Disconnect();
             ep = new IPEndPoint(IPAddress.Any, port);
             Connect();
-            NotifyServerConnectedEvent();
         }
 
         public override void Disconnect()
         {
             stop = true;
             NotifyServerDisconnectedEvent();
-
-            if (client != null && client.Connected)
-            {
-                client.Close();
-            }
-           
-            if(listener != null)
-            {
-                listener.Stop();
-                if(!this.serverTask.IsCanceled)
-                {
-                    this.serverTask.Dispose();
-
-                }
-            }
-        }
-        public override bool IsConnected()
-        {
             try
             {
-                if (stop)
+                if (client != null && client.Connected)
                 {
-                    return false;
+                    client.GetStream().Close();
+                    client.Close();
                 }
-                return this.listener.Pending();
+            }
+            catch (Exception e) { };
 
-            }
-            catch (InvalidOperationException e)
+            try
             {
-                return false;
+                    if (listener != null)
+                {
+                    listener.Server.Close();
+                    listener.Stop();
+                }
             }
+            catch (Exception e) { };
         }
 
         public override string Read()

@@ -11,6 +11,7 @@ namespace FlightSimulator.Model.Interface
         void Connect(string ip, int port, int portCom);
         void Disconnect();
         void DataUpdate();
+        bool IsConnected();
         void Send(string msg);
         double Lat { get; set; } // Will change to SQL database.
         double Lon { get; set; }

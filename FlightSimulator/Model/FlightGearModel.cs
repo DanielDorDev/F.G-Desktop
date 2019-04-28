@@ -12,7 +12,7 @@ using FlightSimulator.Model.Sockets;
 
 namespace FlightSimulator.Model
 {
-    class FlightGearModel : Interface.IFlightModel
+    class FlightGearModel : IFlightModel
     {
         #region Singleton
         private static Interface.IFlightModel m_Instance = null;
@@ -21,7 +21,7 @@ namespace FlightSimulator.Model
 
             if (m_Instance == null)
             {
-                m_Instance = new FlightGearModel(new CreateServer(Properties.Settings.Default.FlightInfoPort),
+                m_Instance = new FlightGearModel(new GetClient(Properties.Settings.Default.FlightInfoPort),
                     new ConnectToServer(Properties.Settings.Default.FlightServerIP, Properties.Settings.Default.FlightCommandPort));
             }
             
@@ -103,8 +103,8 @@ namespace FlightSimulator.Model
             this.telnetServer.Connect();
 
             this.telnetClient = setClient;
-            this.telnetClient.NotifyDisconnected += delegate () { this.StopServer = true; };
-            this.telnetClient.NotifyConnected += delegate () { this.StopServer = false; };
+            this.telnetClient.NotifyDisconnected += delegate () { this.StopClient = true; };
+            this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
             this.telnetClient.Connect();
         }
 
@@ -113,54 +113,46 @@ namespace FlightSimulator.Model
             try
             {
                 double[] fieldChange = Array.ConvertAll(telnetServer.Read().Split(','), Double.Parse);
-                //   file.Wrditse(fieldCshange);
                 Lon = fieldChange[0];
                 Lat = fieldChange[1];
-
             }
-            catch (NullReferenceException e)
-            {
-
-            }
-
+            catch (NullReferenceException e) { };
         }
 
         public void Connect(string txtIP, int txtPort, int txtCommandPort)
         {
-
-
-            if (txtPort != telnetServer.Port)
+            try
             {
-                telnetServer.ReConnect(txtPort);
+                if (txtPort != telnetServer.Port)
+                {
+                    telnetServer.ReConnect(txtPort);
+                }
+                else if (this.StopServer)
+                {
+                    telnetServer.Connect();
+                }
             }
-            else if (!telnetServer.IsConnected())
-            {
-                telnetServer.Connect();
-            }
+            catch (Exception e) { };
 
-            if (txtCommandPort != telnetClient.Port || txtIP != telnetClient.Ip)
+            try
             {
-                telnetClient.ReConnect(txtIP, txtCommandPort);
-            }
-            else if (!telnetClient.IsConnected())
-            {
-                telnetClient.Connect();
-
-            }
+                if (txtCommandPort != telnetClient.Port || txtIP != telnetClient.Ip)
+                {
+                    telnetClient.ReConnect(txtIP, txtCommandPort);
+                }
+                else if (this.StopClient)
+                {
+                    telnetClient.Connect();
+                }
+            } catch (Exception e) { };
         }
 
         public void Disconnect()
         {
-            if (StopServer == false)
-            {
-                StopServer = true;
-                telnetServer.Disconnect();
-            }
-            if (StopClient == false)
-            {
-                StopClient = true;
-                telnetClient.Disconnect();
-            }
+            StopServer = true;
+            telnetServer.Disconnect();
+            StopClient = true;
+            telnetClient.Disconnect();
         }
 
         public void Send(string msg)
@@ -174,6 +166,11 @@ namespace FlightSimulator.Model
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public bool IsConnected()
+        {
+            return !this.StopClient;
         }
     }
 }
