@@ -95,17 +95,30 @@ namespace FlightSimulator.Model
 
         public FlightGearModel(BaseServer setServer, BaseClient setClient)
         {
-            this.telnetServer = setServer;
-            this.telnetServer.NotifyDataRecv += DataUpdate;
-            this.telnetServer.NotifyDisconnected += delegate () { this.StopServer = true;};
-            this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
+            try
+            {
+                this.telnetServer = setServer;
+                this.telnetServer.NotifyDataRecv += DataUpdate;
+                this.telnetServer.NotifyDisconnected += delegate () { this.StopServer = true; };
+                this.telnetServer.NotifyConnected += delegate () { this.StopServer = false; };
+                telnetServer.Connect();
+            }
+            catch (Exception e)
+            {
+                this.StopServer = true;
 
-            this.telnetServer.Connect();
-
-            this.telnetClient = setClient;
-            this.telnetClient.NotifyDisconnected += delegate () { this.StopClient = true; };
-            this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
-            this.telnetClient.Connect();
+            }
+            try
+            {
+                this.telnetClient = setClient;
+                this.telnetClient.NotifyDisconnected += delegate () { this.StopClient = true; };
+                this.telnetClient.NotifyConnected += delegate () { this.StopClient = false; };
+                this.telnetClient.Connect();
+            }
+            catch (Exception e)
+            {
+                this.StopClient = true;
+            }
         }
 
         public void DataUpdate()
@@ -129,7 +142,7 @@ namespace FlightSimulator.Model
                 }
                 else if (this.StopServer)
                 {
-                    telnetServer.Connect();
+                    new Task(() => telnetServer.Connect()).Start();
                 }
             }
             catch (Exception e) { };

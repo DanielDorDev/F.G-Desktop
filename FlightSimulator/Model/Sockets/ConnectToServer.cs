@@ -26,6 +26,7 @@ namespace FlightSimulator.Model.Sockets
             ep = new IPEndPoint(IPAddress.Parse(ip), port);
         }
 
+    
         public override void Connect()
         {
             new Task(() =>
@@ -49,6 +50,8 @@ namespace FlightSimulator.Model.Sockets
             }).Start();
 
         }
+
+
 
         public override void ReConnect(string ip, int port)
         {
