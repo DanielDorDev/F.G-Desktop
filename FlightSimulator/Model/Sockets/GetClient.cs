@@ -83,10 +83,11 @@ namespace FlightSimulator.Model.Sockets
             NotifyServerDisconnectedEvent();
             try
             {
-                if (client != null && client.Connected)
+                if (client != null)
                 {
                     client.GetStream().Close();
                     client.Close();
+                    client = null;
                 }
             }
             catch (Exception e) { };
